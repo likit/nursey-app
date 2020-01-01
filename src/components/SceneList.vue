@@ -13,8 +13,8 @@
                 <div class="card-content">
                     <div class="media">
                         <div class="media-left">
-                            <figure class="image is-128x128">
-                                <img src="img/gift.png">
+                            <figure class="image is-64x64">
+                                <img src="img/greeting-card.png">
                             </figure>
                         </div>
                         <div class="media-content">
