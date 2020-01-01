@@ -2,7 +2,8 @@
 <section class="section">
   <div class="container">
     <img src="img/stinlogo.png">
-    <h1 class="subtitle is-5">ยินดีต้อนรับเข้าสู่ระบบแอพลิเคชั่นสำหรับการเรียนการสอนสาขาพยาบาลศาสตร์ รุ่นที่ 0.2</h1>
+    <p class="title is-size-3">Nursey App Version 0.8</p>
+    <h1 class="title is-5">ยินดีต้อนรับเข้าสู่ระบบแอพลิเคชั่นสำหรับการเรียนการสอนสาขาพยาบาลศาสตร์ รุ่นที่ 0.8</h1>
     <h1 class="subtitle is-5">พัฒนาโดยสถาบันการพยาบาลศรีสวรินทิรา สภากาชาดไทย</h1>
   </div>
 </section>
