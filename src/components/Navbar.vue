@@ -15,6 +15,9 @@
                 About
             </b-navbar-item>
             <b-navbar-dropdown label="Admin">
+                <b-navbar-item tag="router-link" :to="{ name: 'image-list' }">
+                    List images
+                </b-navbar-item>
                 <b-navbar-item tag="router-link" :to="{ name: 'image-upload' }">
                     Upload image
                 </b-navbar-item>
