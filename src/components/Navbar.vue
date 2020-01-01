@@ -8,14 +8,14 @@
             <b-navbar-item tag="router-link" :to="{ name: 'home' }">
                 Home
             </b-navbar-item>
-            <b-navbar-item href="#">
+            <b-navbar-item tag="router-link" :to="{ name: 'lessons' }">
                 Lessons
             </b-navbar-item>
             <b-navbar-item href="#">
                 About
             </b-navbar-item>
             <b-navbar-dropdown label="Admin">
-                <b-navbar-item tag="router-link" :to="{ name: 'image-list' }">
+                <b-navbar-item tag="router-link" :to="{ name: 'images' }">
                     List images
                 </b-navbar-item>
                 <b-navbar-item tag="router-link" :to="{ name: 'image-upload' }">
