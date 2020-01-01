@@ -1,5 +1,8 @@
 # nursey-app
 
+=======
+An app for nursing education.
+
 ## Project setup
 ```
 npm install
