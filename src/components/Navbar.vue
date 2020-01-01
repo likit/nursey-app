@@ -24,6 +24,9 @@
                 <b-navbar-item tag="router-link" :to="{ name: 'create-lesson'} ">
                     Create lesson
                 </b-navbar-item>
+                <b-navbar-item tag="router-link" :to="{ name: 'create-scenario'} ">
+                    Create scenario
+                </b-navbar-item>
             </b-navbar-dropdown>
         </template>
 

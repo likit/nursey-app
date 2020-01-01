@@ -12,7 +12,7 @@
                         <div class="media-content">
                             <p class="title is-4">{{ lesson.name }}</p>
                             <p><strong>Objective:</strong> {{ lesson.objective }}</p>
-                            <button class="button is-primary">Go</button>
+                            <button class="button is-primary" @click="go(lesson.id)">Go</button>
                         </div>
                     </div>
                 </div>
@@ -45,6 +45,10 @@ export default {
                 });
             });
     },
-    methods: {}
+    methods: {
+        go: function(lessonId) {
+            this.$router.push({name: 'scenes', params: { lessonId: lessonId}});
+        }
+    }
 }
 </script>
