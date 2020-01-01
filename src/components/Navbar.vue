@@ -18,6 +18,9 @@
                 <b-navbar-item tag="router-link" :to="{ name: 'images' }">
                     List images
                 </b-navbar-item>
+                <b-navbar-item tag="router-link" :to="{ name: 'holders' }">
+                    List holders
+                </b-navbar-item>
                 <b-navbar-item tag="router-link" :to="{ name: 'image-upload' }">
                     Upload image
                 </b-navbar-item>
@@ -26,6 +29,9 @@
                 </b-navbar-item>
                 <b-navbar-item tag="router-link" :to="{ name: 'create-scenario'} ">
                     Create scenario
+                </b-navbar-item>
+                <b-navbar-item tag="router-link" :to="{ name: 'create-holder'} ">
+                    Create holder
                 </b-navbar-item>
             </b-navbar-dropdown>
         </template>
