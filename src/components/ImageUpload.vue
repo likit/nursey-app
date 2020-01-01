@@ -59,7 +59,7 @@ export default {
     computed: {
         imageFileRef: function() {
             if (this.imageFile) {
-                return storageRef.child('images/'+this.imageFile.name);
+                return storageRef.child(this.category+'/'+this.imageFile.name);
             } else {
                 return '';
             }
@@ -68,15 +68,17 @@ export default {
     methods: {
         uploadFile: function() {
             var self = this;
-            storageRef.child('images').put(self.imageFile).then(function() {
-                db.collection('images').add({
-                    name: self.name,
-                    description: self.desc,
-                    category: self.category,
-                    fileUrl: self.imageFileRef.fullPath,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                self.$router.replace({name: 'home'});
+            storageRef.child(self.category+'/'+self.imageFile.name)
+                .put(self.imageFile).then(function() {
+                    db.collection('images').add({
+                        name: self.name,
+                        description: self.desc,
+                        category: self.category,
+                        fileUrl: self.imageFileRef.fullPath,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                self.resetForm();
+                self.snackbar();
             });
         },
         resetForm: function() {
@@ -84,6 +86,16 @@ export default {
             this.name = '';
             this.desc = '';
             this.category = null;
+            this.isActive = false;
+        },
+        snackbar: function() {
+            this.$buefy.snackbar.open({
+                duration: 3000,
+                message: 'The image has been uploaded.',
+                type: 'is-success',
+                position: 'is-top',
+                queue: false,
+            });
         }
     },
     mounted: function () {
