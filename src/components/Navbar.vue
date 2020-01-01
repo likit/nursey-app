@@ -21,7 +21,7 @@
                 <b-navbar-item tag="router-link" :to="{ name: 'image-upload' }">
                     Upload image
                 </b-navbar-item>
-                <b-navbar-item href="#">
+                <b-navbar-item tag="router-link" :to="{ name: 'create-lesson'} ">
                     Create lesson
                 </b-navbar-item>
             </b-navbar-dropdown>
