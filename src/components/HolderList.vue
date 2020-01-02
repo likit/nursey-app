@@ -1,6 +1,10 @@
 <template>
     <section class="section">
-        <div class="container">
+        <div class="container has-text-centered">
+            <b-message type="is-info" has-icon>
+                Holder เปรียบเสมือนกล่องหรือตู้สำหรับเก็บอุปกรณ์ (รูปภาพของอุปกรณ์) ผู้ใช้สามารถนำอุปกรณ์ต่างๆ ใส่ใน holder ได้โดยไม่มีข้อจำกัดด้วยการคลิดที่ปุ่ม Add images
+                <br>holder ที่สร้างแล้วสามารถนำไปใช้ได้ในหลายแบบฝึกหัดโดยไม่ต้องสร้างใหม่
+            </b-message>
             <div class="card" v-for="holder in holders" :key="holder.id">
                 <div class="card-content">
                     <div class="media">
