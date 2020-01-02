@@ -4,12 +4,12 @@
             <h1 class="title" v-if="lesson">{{ lesson.name }}</h1>
             <h1 class="subtitle" v-if="lesson">{{ lesson.objective }}</h1>
             <button class="button is-primary"
-                @click="addScene(lessonId)">
+                @click="addScenario(lessonId)">
                 <b-icon icon="plus"></b-icon>
                 <span>Scenario</span>
                 </button>
             <hr>
-            <div class="card" v-for="scene in scenes" :key="scene.id">
+            <div class="card" v-for="scenario in scenarios" :key="scenario.id">
                 <div class="card-content">
                     <div class="media">
                         <div class="media-left">
@@ -18,12 +18,18 @@
                             </figure>
                         </div>
                         <div class="media-content">
-                            <p class="title is-4">{{ scene.title }}</p>
-                            <p><strong>Detail:</strong> {{ scene.description }}</p>
-                            <button class="button is-success">
-                                <b-icon icon="play"></b-icon>
-                                <span>Play</span>
-                            </button>
+                            <p class="title is-4">{{ scenario.title }}</p>
+                            <p><strong>Detail:</strong> {{ scenario.description }}</p>
+                            <div class="buttons">
+                                <button class="button is-success">
+                                    <b-icon icon="play"></b-icon>
+                                    <span>Play</span>
+                                </button>
+                                <button @click="editScenario(scenario.id)" class="button">
+                                    <b-icon icon="pencil"></b-icon>
+                                    <span>Edit</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -41,7 +47,7 @@ export default {
     name: 'scene-list',
     data () {
         return {
-            scenes: [],
+            scenarios: [],
             lessonId: '',
             lesson: null,
         }
@@ -56,7 +62,7 @@ export default {
         });
         db.collection('scenarios').get().then(function(snapshot) {
             snapshot.forEach(function(rec) {
-                    self.scenes.push({
+                    self.scenarios.push({
                         title: rec.data()['title'],
                         id: rec.id,
                         description: rec.data()['description']
@@ -65,8 +71,11 @@ export default {
             });
     },
     methods: {
-        addScene: function(lessonId) {
+        addScenario: function(lessonId) {
             this.$router.push({name: 'create-scenario', params: { lessonId: lessonId}});
+        },
+        editScenario: function(scenarioId) {
+            this.$router.push({name: 'edit-scenario', params: { scenarioId: scenarioId}});
         }
     }
 }

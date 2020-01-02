@@ -18,6 +18,9 @@
                 <b-navbar-item tag="router-link" :to="{ name: 'images' }">
                     List images
                 </b-navbar-item>
+                <b-navbar-item tag="router-link" :to="{ name: 'lessons' }">
+                    List lessons
+                </b-navbar-item>
                 <b-navbar-item tag="router-link" :to="{ name: 'holders' }">
                     List holders
                 </b-navbar-item>
@@ -26,9 +29,6 @@
                 </b-navbar-item>
                 <b-navbar-item tag="router-link" :to="{ name: 'create-lesson'} ">
                     Create lesson
-                </b-navbar-item>
-                <b-navbar-item tag="router-link" :to="{ name: 'create-scenario'} ">
-                    Create scenario
                 </b-navbar-item>
                 <b-navbar-item tag="router-link" :to="{ name: 'create-holder'} ">
                     Create holder

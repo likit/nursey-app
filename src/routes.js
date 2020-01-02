@@ -7,6 +7,8 @@ import CreateScene from './components/CreateScene.vue'
 import SceneList from './components/SceneList.vue'
 import CreateHolder from './components/CreateHolder.vue'
 import HolderList from './components/HolderList.vue'
+import HolderAddImage from './components/HolderAddImage.vue'
+import EditScene from './components/EditScene.vue'
 
 export const routes = [
     {
@@ -20,7 +22,7 @@ export const routes = [
         name: 'lessons'
     },
     {
-        path: '/scenes',
+        path: '/lesson/:lessonId/scenarios',
         component: SceneList,
         name: 'scenes'
     },
@@ -30,7 +32,7 @@ export const routes = [
         name: 'holders'
     },
     {
-        path: '/image-upload',
+        path: '/image/upload',
         component: ImageUpload,
         name: 'image-upload'
     },
@@ -40,17 +42,27 @@ export const routes = [
         name: 'images'
     },
     {
+        path: '/holder/:holderId/images/add',
+        component: HolderAddImage,
+        name: 'add-images'
+    },
+    {
         path: '/create-lesson',
         component: CreateLesson,
         name: 'create-lesson'
     },
     {
-        path: '/create-scenario',
+        path: '/lesson/:lessonId/scenario/create',
         component: CreateScene,
         name: 'create-scenario'
     },
     {
-        path: '/create-holder',
+        path: '/scenario/:scenarioId/edit',
+        component: EditScene,
+        name: 'edit-scenario'
+    },
+    {
+        path: '/holder/create',
         component: CreateHolder,
         name: 'create-holder'
     }

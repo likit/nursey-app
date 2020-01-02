@@ -42,6 +42,7 @@ export default {
             db.collection('holders').add({
                 name: self.name,
                 description: self.description,
+                images: [],
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(function(){
                 self.snackbar();

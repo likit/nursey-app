@@ -54,6 +54,8 @@ export default {
                 title: self.title,
                 description: self.description,
                 lessonId: self.lessonId,
+                answers: [],
+                holders: [],
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(function(){
                 self.$router.push({name: 'scenes', params: { lessonId: self.lessonId}});
