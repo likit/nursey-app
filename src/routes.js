@@ -9,6 +9,7 @@ import CreateHolder from './components/CreateHolder.vue'
 import HolderList from './components/HolderList.vue'
 import HolderAddImage from './components/HolderAddImage.vue'
 import EditScene from './components/EditScene.vue'
+import ScenarioPlay from './components/ScenarioPlay.vue'
 
 export const routes = [
     {
@@ -60,6 +61,11 @@ export const routes = [
         path: '/scenario/:scenarioId/edit',
         component: EditScene,
         name: 'edit-scenario'
+    },
+    {
+        path: '/scenario/:scenarioId/play',
+        component: ScenarioPlay,
+        name: 'play-scenario'
     },
     {
         path: '/holder/create',

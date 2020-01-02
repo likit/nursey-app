@@ -21,7 +21,8 @@
                             <p class="title is-4">{{ scenario.title }}</p>
                             <p><strong>Detail:</strong> {{ scenario.description }}</p>
                             <div class="buttons">
-                                <button class="button is-success">
+                                <button @click="playScenario(scenario.id)"
+                                    class="button is-success">
                                     <b-icon icon="play"></b-icon>
                                     <span>Play</span>
                                 </button>
@@ -76,6 +77,9 @@ export default {
         },
         editScenario: function(scenarioId) {
             this.$router.push({name: 'edit-scenario', params: { scenarioId: scenarioId}});
+        },
+        playScenario: function(scenarioId) {
+            this.$router.push({name: 'play-scenario', params: { scenarioId: scenarioId}});
         }
     }
 }
