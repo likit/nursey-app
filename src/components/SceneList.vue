@@ -1,13 +1,15 @@
 <template>
     <section class="section">
-        <div class="container">
+        <div class="container has-text-centered">
             <h1 class="title" v-if="lesson">{{ lesson.name }}</h1>
             <h1 class="subtitle" v-if="lesson">{{ lesson.objective }}</h1>
-            <button class="button is-primary"
-                @click="addScenario(lessonId)">
-                <b-icon icon="plus"></b-icon>
-                <span>Scenario</span>
+            <div class="has-text-right">
+                <button class="button is-primary"
+                    @click="addScenario(lessonId)">
+                    <b-icon icon="plus"></b-icon>
+                    <span>Scenario</span>
                 </button>
+            </div>
             <hr>
             <div class="card" v-for="scenario in scenarios" :key="scenario.id">
                 <div class="card-content">

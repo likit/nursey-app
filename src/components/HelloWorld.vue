@@ -1,8 +1,8 @@
 <template>
-<section class="section">
-  <div class="container">
+<section class="hero is-large is-bold is-primary is-fullheight-with-navbar">
+  <div class="container is-fluid has-text-centered">
     <img src="img/stinlogo.png">
-    <p class="title is-size-3">Nursey App Version 0.8</p>
+    <p class="title is-size-3">Nursey App v.0.8</p>
     <h1 class="title is-5">ยินดีต้อนรับเข้าสู่ระบบแอพลิเคชั่นสำหรับการเรียนการสอนสาขาพยาบาลศาสตร์ รุ่นที่ 0.8</h1>
     <h1 class="subtitle is-5">พัฒนาโดยสถาบันการพยาบาลศรีสวรินทิรา สภากาชาดไทย</h1>
   </div>
