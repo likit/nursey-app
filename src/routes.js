@@ -53,17 +53,17 @@ export const routes = [
         name: 'create-lesson'
     },
     {
-        path: '/lesson/:lessonId/scenario/create',
+        path: '/lesson/:lessonId/scenarios/create',
         component: CreateScene,
         name: 'create-scenario'
     },
     {
-        path: '/scenario/:scenarioId/edit',
+        path: '/scenarios/:scenarioId/edit',
         component: EditScene,
         name: 'edit-scenario'
     },
     {
-        path: '/scenario/:scenarioId/play',
+        path: '/lesson/:lessonId/scenarios/:scenarioId/play',
         component: ScenarioPlay,
         name: 'play-scenario'
     },
