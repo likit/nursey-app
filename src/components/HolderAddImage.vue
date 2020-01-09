@@ -11,6 +11,9 @@
         <b-tabs v-model="activeTab">
             <b-tab-item label="Images">
                 <div class="container">
+                    <b-message type="is-info" has-icon>
+                        แท็บนี้แสดงรายการรูปทั้งหมด ผู้ใช้สามารถเพิ่มรูปลงใน holder ได้ด้วยการคลิกที่ปุ่ม Add จากนั้นรูปจะย้ายไปอยู่ที่แท็บ holder
+                    </b-message>
                     <div class="card" v-for="image in filteredImages" :key="image.id">
                         <div class="card-content">
                             <div class="media">
@@ -38,6 +41,9 @@
             </b-tab-item>
             <b-tab-item label="Holder">
                 <div class="container">
+                    <b-message type="is-info" has-icon>
+                        แท็บนี้แสดงรายการรูปที่อยู่ใน holder ผู้ใช้สามารถลบรูปออกจาก holder ได้ด้วยการคลิกที่ปุ่ม Remove
+                    </b-message>
                     <div class="card" v-for="image in selectedItems" :key="image.id">
                         <div class="card-content">
                             <div class="media">
