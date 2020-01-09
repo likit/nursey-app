@@ -85,7 +85,10 @@ export default {
             this.$router.push({name: 'edit-scenario', params: { scenarioId: scenarioId}});
         },
         playScenario: function(scenarioId) {
-            this.$router.push({name: 'play-scenario', params: { scenarioId: scenarioId}});
+            this.$router.push({
+                name: 'play-scenario',
+                params: { scenarioId: scenarioId, lessonId: this.lessonId}
+            });
         }
     }
 }
