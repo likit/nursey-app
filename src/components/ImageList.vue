@@ -1,6 +1,10 @@
 <template>
     <section class="section">
         <div class="container">
+            <b-loading :is-full-page="true"
+                :active.sync="images.length===0"
+                :can-cancel="true">
+            </b-loading>
             <div class="card" v-for="image in images" :key="image.id">
                 <div class="card-content">
                     <div class="media">

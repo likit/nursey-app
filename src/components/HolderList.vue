@@ -1,6 +1,10 @@
 <template>
     <section class="section">
         <div class="container has-text-centered">
+            <b-loading :is-full-page="true"
+                :active.sync="holders.length===0"
+                :can-cancel="true">
+            </b-loading>
             <b-message type="is-info" has-icon>
                 Holder เปรียบเสมือนกล่องหรือตู้สำหรับเก็บอุปกรณ์ (รูปภาพของอุปกรณ์) ผู้ใช้สามารถนำอุปกรณ์ต่างๆ ใส่ใน holder ได้โดยไม่มีข้อจำกัดด้วยการคลิดที่ปุ่ม Add images
                 <br>holder ที่สร้างแล้วสามารถนำไปใช้ได้ในหลายแบบฝึกหัดโดยไม่ต้องสร้างใหม่
