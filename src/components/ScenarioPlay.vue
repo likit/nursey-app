@@ -1,10 +1,19 @@
 <template>
 <section class="section">
+    <div class="container has-text-right">
+        <h1 class="title" v-if="countDown>0">Time: {{ countDown }}</h1>
+    </div>
     <div class="container has-text-centered">
-        <h1 class="title">{{ scenario.title }}</h1>
-        <div class="box">
-            <p>{{ scenario.description }}</p>
+        <div v-if="scenario">
+            <h1 class="title">{{ scenario.title }}</h1>
+            <b-message class="is-info" has-icon>
+                <p>{{ scenario.description }}</p>
+            </b-message>
         </div>
+        <div v-else>
+            <h1 class="title">Loading...</h1>
+        </div>
+        <hr>
         <div class="card" v-for="holder in selectedItems" :key="holder.id">
             <div class="card-content">
                 <div class="media">
@@ -100,7 +109,8 @@ export default {
             selected: [],
             cache: {},
             showAnswer: false,
-            scenario: null
+            scenario: null,
+            countDown: 0
         };
     },
     mounted: function() {
@@ -114,8 +124,9 @@ export default {
                         id: doc.id,
                         description: doc.data()['description'],
                         holders: doc.data()['holders'],
-                        answers: doc.data()['answers']
+                        answers: doc.data()['answers'],
                     };
+                    self.countDown = doc.data()['timeLimit'];
                 }
         });
         db.collection('holders').get().then(function(snapshot) {
@@ -154,9 +165,29 @@ export default {
                     });
                 }
             });
+            self.timer();
         });
     },
     methods: {
+        timer: function() {
+            var self = this;
+            if (self.countDown>0) {
+                setTimeout(() => {
+                    self.countDown -= 1;
+                    self.timer();
+                }, 1000);
+            } else {
+                this.$router.push({
+                    name: "scenes",
+                    params: {
+                        lessonId: this.$route.params.lessonId
+                    }
+                });
+            }
+        },
+        stopTimer: function() {
+            clearInterval(this.timer);
+        },
         open: function(holder) {
             var self = this;
             self.imageSets = self.cache[holder.id];
@@ -182,7 +213,7 @@ export default {
             if (idx > -1) {
                 self.selected.splice(idx, 1);
             }
-        }
+        },
     }
 }
 </script>
