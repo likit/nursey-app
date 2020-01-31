@@ -10,12 +10,31 @@ import HolderList from './components/HolderList.vue'
 import HolderAddImage from './components/HolderAddImage.vue'
 import EditScene from './components/EditScene.vue'
 import ScenarioPlay from './components/ScenarioPlay.vue'
+import Register from './components/Register.vue'
+import Login from './components/Login.vue'
+import Dashboard from './components/Dashboard.vue'
+import PlayStat from './components/PlayStat.vue'
 
 export const routes = [
     {
         path: '/',
         component: HellWorld,
         name: 'home'
+    },
+    {
+        path: '/register',
+        component: Register,
+        name: 'register'
+    },
+    {
+        path: '/login',
+        component: Login,
+        name: 'login'
+    },
+    {
+        path: '/dashboard',
+        component: Dashboard,
+        name: 'dashboard'
     },
     {
         path: '/lessons',
@@ -71,5 +90,10 @@ export const routes = [
         path: '/holder/create',
         component: CreateHolder,
         name: 'create-holder'
+    },
+    {
+        path: '/admin/playstats',
+        component: PlayStat,
+        name: 'playstats'
     }
 ]

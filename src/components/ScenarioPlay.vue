@@ -6,6 +6,7 @@
     <div class="container has-text-centered">
         <div v-if="scenario">
             <h1 class="title">{{ scenario.title }}</h1>
+            <h1 class="subtitle">Player: {{ user.data.displayName }}</h1>
             <b-message class="is-info" has-icon>
                 <p>{{ scenario.description }}</p>
             </b-message>
@@ -30,6 +31,8 @@
                 </div>
             </div>
         </div>
+        <br>
+        <b-button type="is-link" @click="countDown=0">Finish</b-button>
         <hr>
         <h1 class="title">Your selections</h1>
         <button @click="showAnswer=true" class="button">Show Answers</button>
@@ -89,7 +92,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import {firebaseApp} from '../firebase-config.js'
+import firebase from 'firebase'
 
 const storage = firebaseApp.storage('gs://nursey-cd88a.appspot.com/');
 const db = firebaseApp.firestore();
@@ -112,6 +117,18 @@ export default {
             scenario: null,
             countDown: 0
         };
+    },
+    computed: {
+        ...mapGetters({
+        user: "user"
+        }),
+        selectedOrAnwsers: function() {
+            if (this.showAnswer) {
+                return this.answers;
+            } else {
+                return this.selected;
+            }
+        }
     },
     mounted: function() {
         var self = this;
@@ -169,6 +186,9 @@ export default {
         });
     },
     methods: {
+        toast() {
+            this.$buefy.toast.open('Tims is up!')
+        },
         timer: function() {
             var self = this;
             if (self.countDown>0) {
@@ -177,11 +197,19 @@ export default {
                     self.timer();
                 }, 1000);
             } else {
-                this.$router.push({
-                    name: "scenes",
-                    params: {
-                        lessonId: this.$route.params.lessonId
-                    }
+                self.toast();
+                db.collection('plays').add({
+                    scenarioId: self.scenarioId,
+                    user: self.user,
+                    lessonId: self.$route.params.lessonId,
+                    answers: self.answers,
+                    selectedItems: self.selectedItems,
+                    selected: self.selected,
+                    score: 10,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(function(){
+                    self.$buefy.toast.open({ message: 'Your play record has been saved!', type: "is-success"});
+                    self.$router.push({name: 'scenes', params: { lessonId: self.$route.params.lessonId}});
                 });
             }
         },
