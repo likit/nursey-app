@@ -9,6 +9,7 @@
         <b-field label="Objective">
             <b-input type="textarea" v-model="objective"></b-input>
         </b-field>
+        <b-switch v-model="isPracticeMode" true-value="yes" false-value="no">Practice Mode</b-switch>
         <div class="buttons">
             <button @click="resetForm" class="button is-danger">Reset</button>
             <button @click="submitForm" class="button is-primary">Submit</button>
@@ -29,19 +30,22 @@ export default {
     data() {
         return {
             name: '',
-            objective: ''
+            objective: '',
+            isPracticeMode: false,
         }
     },
     methods: {
         resetForm: function() {
             this.name = '';
             this.objective = '';
+            this.isPracticeMode = false;
         },
         submitForm: function() {
             var self = this;
             db.collection('lessons').add({
                 name: self.name,
                 objective: self.objective,
+                isPracticeMode: self.isPracticeMode,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(function(){
                 self.snackbar();

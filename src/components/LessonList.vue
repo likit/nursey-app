@@ -14,7 +14,7 @@
                             </figure>
                         </div>
                         <div class="media-content">
-                            <p class="title is-4">{{ lesson.name }}</p>
+                            <p class="title is-4">{{ lesson.name }} <span v-if="lesson.isPracticeMode">(Practice Mode)</span></p>
                             <p><strong>Objective:</strong> {{ lesson.objective }}</p>
                             <button class="button is-primary" @click="go(lesson.id)">Go</button>
                         </div>
@@ -44,7 +44,8 @@ export default {
                     self.lessons.push({
                         name: rec.data()['name'],
                         id: rec.id,
-                        objective: rec.data()['objective']
+                        objective: rec.data()['objective'],
+                        isPracticeMode: rec.data()['isPracticeMode']
                     });
                 });
             });

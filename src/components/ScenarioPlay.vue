@@ -1,7 +1,7 @@
 <template>
 <section class="section">
     <div class="container has-text-right">
-        <h1 class="title" v-if="countDown>0">Time: {{ countDown }}</h1>
+        <h1 class="title" v-if="countDown>=0">Time: {{ countDown }}</h1>
     </div>
     <div class="container has-text-centered">
         <div v-if="scenario">
@@ -15,6 +15,7 @@
             <h1 class="title">Loading...</h1>
         </div>
         <hr>
+        <h3 class="title is-size-5">จำนวนอุปกรณ์คือ {{ answers.length }} ชิ้น</h3>
         <div class="card" v-for="holder in selectedItems" :key="holder.id">
             <div class="card-content">
                 <div class="media">
@@ -32,7 +33,8 @@
             </div>
         </div>
         <br>
-        <b-button type="is-link" @click="countDown=0">Finish</b-button>
+        <b-button v-if="isPracticeMode" type="is-link" @click="gameStopped=true">Finish</b-button>
+        <b-button v-else type="is-link" @click="gameStopped=true">Finish</b-button>
         <hr>
         <h1 class="title">Your selections</h1>
         <button @click="showAnswer=true" class="button">Show Answers</button>
@@ -53,11 +55,12 @@
                 </td>
                 <td>
                     <div v-if="showAnswer">
+                        {{ isCorrect(img) }}
                         <span class="icon has-text-success" v-if="isCorrect(img)">
                             <i class="fas fa-check"></i>
                         </span>
                         <span class="icon has-text-danger" v-else>
-                            <i class="fas fa-check"></i>
+                            <i class="fas fa-times"></i>
                         </span>
                     </div>
                 </td>
@@ -115,7 +118,10 @@ export default {
             cache: {},
             showAnswer: false,
             scenario: null,
-            countDown: 0
+            countDown: 0,
+            isPracticeMode: false,
+            gameStopped: false,
+            timelimit: 0,
         };
     },
     computed: {
@@ -133,6 +139,16 @@ export default {
     mounted: function() {
         var self = this;
         self.scenarioId = self.$route.params.scenarioId;
+        var lessonId = self.$route.params.lessonId;
+        db.collection('lessons').doc(lessonId)
+            .get().then(function(doc) {
+                if(doc.exists) {
+                    self.isPracticeMode = doc.data()['isPracticeMode'];
+                } else {
+                    self.isPracticeMode = false;
+                }
+            });
+
         db.collection('scenarios').doc(self.scenarioId)
             .get().then(function(doc){
                 if(doc.exists) {
@@ -144,6 +160,7 @@ export default {
                         answers: doc.data()['answers'],
                     };
                     self.countDown = doc.data()['timeLimit'];
+                    self.timelimit = self.countDown;
                 }
         });
         db.collection('holders').get().then(function(snapshot) {
@@ -182,22 +199,30 @@ export default {
                     });
                 }
             });
-            self.timer();
+            if(self.isPracticeMode) {
+                self.countDown = 0;
+                self.clock();
+            } else {
+                self.timer();
+            }
         });
     },
     methods: {
         toast() {
             this.$buefy.toast.open('Tims is up!')
         },
-        timer: function() {
+        clock: function() {
             var self = this;
-            if (self.countDown>0) {
-                setTimeout(() => {
-                    self.countDown -= 1;
-                    self.timer();
-                }, 1000);
-            } else {
+            if(self.gameStopped) {
                 self.toast();
+                var totalScore = 0;
+                self.selected.forEach(function(item){
+                    if (self.isCorrect(item)) {
+                        totalScore += 1;
+                    } else {
+                        totalScore -= 0.5;
+                    }
+                });
                 db.collection('plays').add({
                     scenarioId: self.scenarioId,
                     user: self.user,
@@ -205,16 +230,59 @@ export default {
                     answers: self.answers,
                     selectedItems: self.selectedItems,
                     selected: self.selected,
-                    score: 10,
+                    score: totalScore,
+                    time: self.countDown,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 }).then(function(){
                     self.$buefy.toast.open({ message: 'Your play record has been saved!', type: "is-success"});
-                    self.$router.push({name: 'scenes', params: { lessonId: self.$route.params.lessonId}});
+                    // self.$router.push({name: 'scenes', params: { lessonId: self.$route.params.lessonId}});
+                });
+            } else {
+                setTimeout(() => {
+                    self.countDown += 1;
+                    self.clock();
+                }, 1000);
+            }
+        },
+        timer: function() {
+            var self = this;
+            if (self.countDown > 0 && self.gameStopped !== true) {
+                setTimeout(() => {
+                    self.countDown -= 1;
+                    self.timer();
+                }, 1000);
+            } else {
+                self.toast();
+                var totalScore = 0;
+                self.selected.forEach(function(item){
+                    if (self.isCorrect(item)) {
+                        totalScore += 1;
+                    } else {
+                        totalScore -= 0.5;
+                    }
+                });
+                db.collection('plays').add({
+                    scenarioId: self.scenarioId,
+                    user: self.user,
+                    lessonId: self.$route.params.lessonId,
+                    answers: self.answers,
+                    selectedItems: self.selectedItems,
+                    selected: self.selected,
+                    time: self.timelimit - self.countDown,
+                    score: totalScore,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(function(){
+                    self.$buefy.toast.open({ message: 'Your play record has been saved!', type: "is-success"});
+                    // self.$router.push({name: 'scenes', params: { lessonId: self.$route.params.lessonId}});
                 });
             }
         },
         stopTimer: function() {
-            clearInterval(this.timer);
+            if(this.isPracticeMode) {
+                clearInterval(this.clock);
+            } else {
+                clearInterval(this.timer);
+            }
         },
         open: function(holder) {
             var self = this;
