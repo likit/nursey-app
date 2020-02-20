@@ -25,9 +25,13 @@
                         </figure>
                     </div>
                     <div class="media-content">
-                        <p class="title is-4">{{ holder.name }}</p>
-                        <p><strong>Detail:</strong> {{ holder.description }}</p>
-                        <button @click="open(holder)" class="button">Open</button>
+                        <div class="columns">
+                            <div class="column">
+                                <p class="title is-4">{{ holder.name }}</p>
+                                <p><strong>Detail:</strong> {{ holder.description }}</p>
+                                <button @click="open(holder)" class="button">Open</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -55,7 +59,6 @@
                 </td>
                 <td>
                     <div v-if="showAnswer">
-                        {{ isCorrect(img) }}
                         <span class="icon has-text-success" v-if="isCorrect(img)">
                             <i class="fas fa-check"></i>
                         </span>
@@ -78,18 +81,41 @@
                 <footer class="card-footer">
                     <p class="card-footer-item">
                         <a @click="pick(image)">Pick</a>
+                        <span class="icon has-text-success" v-if="isPicked(image)">
+                            <i class="fas fa-check"></i>
+                        </span>
                     </p>
                     <p class="card-footer-item">
                         <a @click="drop(image)">Drop</a>
                     </p>
                     <p class="card-footer-item">
-                        <span class="icon has-text-success" v-if="isPicked(image)">
-                            <i class="fas fa-check"></i>
-                        </span>
+                        <a @click="toggleModal=false">Close</a>
                     </p>
                 </footer>
             </div>
         </section>
+    </b-modal>
+    <b-modal :active.sync="toggleScoreModal" scroll="keep">
+        <div class="card box">
+            <div class="card-image">
+                <figure class="image is-centered">
+                    <img :src="rocketIconfileUrl">
+                </figure>
+            </div>
+            <div class="card-content has-text-centered">
+                <h1 class="title is-size-4">
+                    คุณได้รับคะแนน {{ score }} คะแนน
+                </h1>
+                <h1 class="subtitle is-size-4">
+                    <div v-if="isPracticeMode">
+                        คุณใช้เวลาไปทั้งสิ้น {{ countDown }} วินาที
+                    </div>
+                    <div v-else>
+                        คุณใช้เวลาไปทั้งสิ้น {{ timelimit - countDown }} วินาที
+                    </div>
+                </h1>
+            </div>
+        </div>
     </b-modal>
 </section>
 </template>
@@ -109,6 +135,7 @@ export default {
     data () {
         return {
             toggleModal: false,
+            toggleScoreModal: false,
             holders: [],
             images: [],
             answers: [],
@@ -122,6 +149,8 @@ export default {
             isPracticeMode: false,
             gameStopped: false,
             timelimit: 0,
+            rocketIconfileUrl: "",
+            score: 0,
         };
     },
     computed: {
@@ -206,6 +235,10 @@ export default {
                 self.timer();
             }
         });
+        var storageRef = storage.ref();
+        storageRef.child("icons/party.png").getDownloadURL().then(function(url) {
+                self.rocketIconfileUrl = url;
+        });
     },
     methods: {
         toast() {
@@ -223,6 +256,8 @@ export default {
                         totalScore -= 0.5;
                     }
                 });
+                self.score = totalScore;
+                self.toggleScoreModal = true;
                 db.collection('plays').add({
                     scenarioId: self.scenarioId,
                     user: self.user,
@@ -261,6 +296,8 @@ export default {
                         totalScore -= 0.5;
                     }
                 });
+                self.score = totalScore;
+                self.toggleScoreModal = true;
                 db.collection('plays').add({
                     scenarioId: self.scenarioId,
                     user: self.user,
