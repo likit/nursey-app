@@ -14,6 +14,7 @@ import Register from './components/Register.vue'
 import Login from './components/Login.vue'
 import Dashboard from './components/Dashboard.vue'
 import PlayStat from './components/PlayStat.vue'
+import Game from './components/Game.vue'
 
 export const routes = [
     {
@@ -95,5 +96,10 @@ export const routes = [
         path: '/admin/playstats',
         component: PlayStat,
         name: 'playstats'
+    },
+    {
+        path: '/game',
+        component: Game,
+        name: 'game'
     }
 ]
