@@ -10,7 +10,7 @@
   "dependencies": {
     "buefy": "^0.8.9",
     "core-js": "^3.4.4",
-    "firebase": "^7.6.1",
+    "firebase": "^7.16.1",
     "phaser": "^3.23.0",
     "phaser-state-transition": "^2.5.1",
     "phaser3-rex-plugins": "^1.1.19",

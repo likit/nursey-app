@@ -4,6 +4,7 @@ import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import PlayGame from './scenes/PlayGame'
 import BootGame from './scenes/BootGame'
 import PickItem from './scenes/PickItem'
+import Map from './scenes/Map'
 
 function launch(containerId) {
     return new Phaser.Game({
@@ -19,7 +20,7 @@ function launch(containerId) {
                 debug: false
             }
         },
-        scene: [BootGame, PlayGame, PickItem],
+        scene: [BootGame, Map, PlayGame, PickItem],
         plugins: {
             scene: [{
                 key: 'rexUI',

@@ -6,6 +6,7 @@ import fixomull2 from '../assets/fixomull2.png'
 import saline1 from '../assets/saline1.png'
 import backArrow from '../assets/arrow.png'
 import box from '../assets/package.png'
+import yellow from '../assets/Yellow_free_48x48.png'
 
 export default class bootGame extends Phaser.Scene{
     constructor() {
@@ -19,8 +20,10 @@ export default class bootGame extends Phaser.Scene{
         this.load.image("saline1",  saline1)
         this.load.image("back", backArrow)
         this.load.image("box", box)
+        this.load.image("mario", "https://miro.medium.com/max/176/1*nYRQLN_J6TOMcurufrT7TQ.png")
+        this.load.image("yellow-tiles", yellow)
     }
     create(){
-        this.scene.start("PlayGame")
+        this.scene.start("Map")
     }
 }
