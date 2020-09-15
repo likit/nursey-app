@@ -8,6 +8,11 @@ export default class Map extends Phaser.Scene{
     constructor() {
         super("Map");
     }
+    init(data) {
+        this.scenarioId = data.scenarioId
+        this.explore = data.explore
+        this.selectedItems = data.selectedItems === undefined ? [] : data.selectedItems
+    }
     preload(){
         this.load.image("tiles", room)
         this.load.scenePlugin({
@@ -28,18 +33,31 @@ export default class Map extends Phaser.Scene{
             level.push(row)
             row = []
         }
-        var nurseImg = this.add.image(300,130,"nurse1")
+        let nurseImg = this.add.image(300,130,"nurse1")
         nurseImg.setScale(0.20, 0.20)
         const map = this.make.tilemap({key: "map", data: level, tileWidth: 32, tileHeight: 32})
         const tiles = map.addTilesetImage("tiles")
         map.createStaticLayer(0, tiles, 10, 150)
-        let content = 'คลิกที่ตำแหน่งต่าง ๆ\nเพื่อสำรวจหอผู้ป่วย'
+        let playButton
+        if(this.explore) {
+            playButton = this.add.image(190, 580, "play")
+            playButton.setScale(0.10, 0.1)
+            playButton.setInteractive()
+            this.add.text(220,580, 'Play')
+        }
+        let content = ''
+        if(this.explore) {
+            content = 'คลิกที่ตำแหน่งต่าง ๆ\nเพื่อสำรวจหอผู้ป่วย'
+        } else {
+            content = 'คลิกเพื่อค้นหาอุปกรณ์\nจากตู้หรือรถเข็น'
+        }
         createTextBox(this, 20, 50, { wrapWidth: 300, }).start(content, 50);
         let dialog = undefined
         this.input.on('pointerdown', (pointer)=>{
             let scene = this
             let title = ''
             let desc = ''
+            let containerId = ''
             let t = map.getTileAtWorldXY(pointer.x, pointer.y)
             if (t !== null) {
                 console.log(t.index)
@@ -47,6 +65,7 @@ export default class Map extends Phaser.Scene{
                     case 40:
                     case 18:
                     case 29:
+                        containerId = '3bQSljR3OOLT6wQcEi2Q'
                         title = 'ตู้เย็นเก็บยา'
                         desc = 'ตู้สำหรับเก็บยาต่างๆ'
                         break
@@ -65,19 +84,60 @@ export default class Map extends Phaser.Scene{
                         break
                     default:
                         title = ''
+                        desc = ''
+                        containerId = ''
                 }
                 if (dialog !== undefined) {
                     dialog.scaleDownDestroy(100)
                     dialog = undefined
                 } else {
                     if (title !== '') {
-                        dialog = createDialog(scene, title, desc, pointer.x, pointer.y)
+                        if(scene.explore) {
+                            dialog = createDialog(scene, title, desc, pointer.x, pointer.y)
+                        } else {
+                            this.scene.start('PickItem',
+                                {
+                                    scenarioId: this.scenarioId,
+                                    selectedItems: this.selectedItems,
+                                    containerId: containerId
+                                })
+                        }
                     }
                 }
             } else {
                 console.log('Tile index not found.')
             }
         })
+        if(this.explore) {
+            // this chunk needs to be here or the event won't fire
+            let scene = this
+            playButton.on('pointerdown', ()=>{
+                this.scene.start('ScenarioScene',
+                    {
+                        scenarioId: scene.scenarioId,
+                        explore: false
+                    })
+            })
+        } else {
+            this.add.text(100,550, 'Selected Items: ' + this.selectedItems.length)
+            var buttons = this.rexUI.add.buttons({
+                x: 200, y: 600,
+                width: 300,
+                orientation: 'x',
+                buttons: [
+                    createButton(this, 'Quit'),
+                    createButton(this, 'Finish'),
+                    createButton(this, 'List'),
+                ],
+                expand: true
+            })
+                .layout()
+            //.drawBounds(this.add.graphics(), 0xff0000)
+            buttons
+                .on('button.click', function (button) {
+                    console.log(`Click button-${button.text}`);
+                })
+        }
     }
 }
 
@@ -139,6 +199,23 @@ let createDialog = function(scene, title, desc, x, y) {
         });
     return dialog
 }
+
+var createButton = function (scene, text) {
+    return scene.rexUI.add.label({
+        width: 40,
+        height: 40,
+        background: scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, COLOR_LIGHT),
+        text: scene.add.text(0, 0, text, {
+            fontSize: 18
+        }),
+        space: {
+            left: 10,
+            right: 10,
+        },
+        align: 'center'
+    });
+}
+
 
 /**
 let createLabel = function (scene, text) {

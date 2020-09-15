@@ -9,7 +9,6 @@ import CreateHolder from './components/CreateHolder.vue'
 import HolderList from './components/HolderList.vue'
 import HolderAddImage from './components/HolderAddImage.vue'
 import EditScene from './components/EditScene.vue'
-import ScenarioPlay from './components/ScenarioPlay.vue'
 import Register from './components/Register.vue'
 import Login from './components/Login.vue'
 import Dashboard from './components/Dashboard.vue'
@@ -83,11 +82,6 @@ export const routes = [
         name: 'edit-scenario'
     },
     {
-        path: '/lesson/:lessonId/scenarios/:scenarioId/play',
-        component: ScenarioPlay,
-        name: 'play-scenario'
-    },
-    {
         path: '/holder/create',
         component: CreateHolder,
         name: 'create-holder'
@@ -98,8 +92,8 @@ export const routes = [
         name: 'playstats'
     },
     {
-        path: '/game',
+        path: '/scenario/:scenarioId/play',
         component: Game,
-        name: 'game'
+        name: 'play-scenario'
     }
 ]

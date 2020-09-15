@@ -6,10 +6,14 @@ import fixomull2 from '../assets/fixomull2.png'
 import saline1 from '../assets/saline1.png'
 import backArrow from '../assets/arrow.png'
 import box from '../assets/package.png'
+import playButton from '../assets/play-button.png'
 
 export default class bootGame extends Phaser.Scene{
     constructor() {
         super("BootGame");
+    }
+    init(data) {
+        this.scenarioId = data.scenarioId
     }
     preload(){
         this.load.image("background", bg)
@@ -18,9 +22,10 @@ export default class bootGame extends Phaser.Scene{
         this.load.image("fixomull2",  fixomull2)
         this.load.image("saline1",  saline1)
         this.load.image("back", backArrow)
+        this.load.image("play", playButton)
         this.load.image("box", box)
     }
     create(){
-        this.scene.start("Map")
+        this.scene.start("Map", {scenarioId: this.scenarioId, explore: true})
     }
 }

@@ -1,13 +1,8 @@
 import Phaser from 'phaser'
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
-import PlayGame from './scenes/PlayGame'
-import BootGame from './scenes/BootGame'
-import PickItem from './scenes/PickItem'
-import Map from './scenes/Map'
-
 function launch(containerId) {
-    return new Phaser.Game({
+    let game = new Phaser.Game({
         type: Phaser.AUTO,
         width: 375,
         height: 640,
@@ -20,7 +15,6 @@ function launch(containerId) {
                 debug: false
             }
         },
-        scene: [BootGame, Map, PlayGame, PickItem],
         plugins: {
             scene: [{
                 key: 'rexUI',
@@ -30,14 +24,15 @@ function launch(containerId) {
             ]
         }
     })
+    return game
 }
 
 function resizeGame(game){
-    var canvas = document.querySelector("canvas");
-    var windowWidth = window.innerWidth;
-    var windowHeight = window.innerHeight;
-    var windowRatio = windowWidth / windowHeight;
-    var gameRatio = game.config.width / game.config.height; if(windowRatio < gameRatio){
+    let canvas = document.querySelector("canvas");
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+    let windowRatio = windowWidth / windowHeight;
+    let gameRatio = game.config.width / game.config.height; if(windowRatio < gameRatio){
         canvas.style.width = windowWidth + "px";
         canvas.style.height = (windowWidth / gameRatio) + "px"; }
     else{
