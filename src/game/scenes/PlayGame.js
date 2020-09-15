@@ -7,12 +7,12 @@ const COLOR_DARK = 0x260e04;
 
 const content = "เลือกตู้หรือกล่องที่บรรจุอุปกรณ์"
 
-var data = {
+let data = {
     name: 'ตู้พยาบาล',
     containers: [
-        { name: 'A', id: 1 },
-        { name: 'B', id: 2 },
-        { name: 'C', id: 3 },
+        {name: 'A', id: 1},
+        {name: 'B', id: 2},
+        {name: 'C', id: 3},
     ]
 };
 
@@ -281,7 +281,7 @@ var getBuiltInText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
 }
 */
 
-var getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
+let getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
     return scene.rexUI.add.BBCodeText(0, 0, '', {
         fixedWidth: fixedWidth,
         fixedHeight: fixedHeight,
