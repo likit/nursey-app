@@ -33,14 +33,16 @@ export default {
   },
   methods: {
     submit() {
+      let self = this
       firebase
         .auth()
-        .signInWithEmailAndPassword(this.form.email, this.form.password)
+        .signInWithEmailAndPassword(self.form.email, self.form.password)
         .then(() => {
-            this.$router.replace({ name: "home"});
+            self.$router.replace({ name: "home"});
         })
         .catch(err => {
-          this.error = err.message;
+          self.error = err.message;
+          alert("Password error")
         });
     }
   }
