@@ -4,6 +4,7 @@ import room from '../assets/room3.png'
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 
+
 export default class Map extends Phaser.Scene{
     constructor() {
         super("Map");
@@ -12,6 +13,7 @@ export default class Map extends Phaser.Scene{
         this.scenarioId = data.scenarioId
         this.explore = data.explore
         this.selectedItems = data.selectedItems === undefined ? [] : data.selectedItems
+        this.answers = data.answers === undefined ? [] : data.answers
     }
     preload(){
         this.load.image("tiles", room)
@@ -22,6 +24,7 @@ export default class Map extends Phaser.Scene{
         });
     }
     create(){
+        console.log(this.answers)
         this.add.image(100,100,"background")
         this.add.rectangle(185, 380, 362, 320, 0xe0e0d1);
         const level = []
@@ -33,8 +36,7 @@ export default class Map extends Phaser.Scene{
             level.push(row)
             row = []
         }
-        let nurseImg = this.add.image(300,130,"nurse1")
-        nurseImg.setScale(0.20, 0.20)
+        this.add.image(300,130,"nurse2")
         const map = this.make.tilemap({key: "map", data: level, tileWidth: 32, tileHeight: 32})
         const tiles = map.addTilesetImage("tiles")
         map.createStaticLayer(0, tiles, 10, 150)
@@ -72,6 +74,7 @@ export default class Map extends Phaser.Scene{
                     case 30:
                     case 19:
                     case 41:
+                        containerId = 'cbWN3ZVs4AXpQ3vftpNZ'
                         title = 'ตู้เก็บสารละลาย'
                         desc = 'ตู้สำหรับเก็บสารละลาย\nต่างๆ'
                         break
@@ -99,7 +102,8 @@ export default class Map extends Phaser.Scene{
                                 {
                                     scenarioId: this.scenarioId,
                                     selectedItems: this.selectedItems,
-                                    containerId: containerId
+                                    containerId: containerId,
+                                    answers: this.answers
                                 })
                         }
                     }
@@ -120,7 +124,7 @@ export default class Map extends Phaser.Scene{
             })
         } else {
             this.add.text(100,550, 'Selected Items: ' + this.selectedItems.length)
-            var buttons = this.rexUI.add.buttons({
+            let buttons = this.rexUI.add.buttons({
                 x: 200, y: 600,
                 width: 300,
                 orientation: 'x',
@@ -133,9 +137,18 @@ export default class Map extends Phaser.Scene{
             })
                 .layout()
             //.drawBounds(this.add.graphics(), 0xff0000)
+            let scene = this
             buttons
                 .on('button.click', function (button) {
-                    console.log(`Click button-${button.text}`);
+                    console.log(`Click button-${button.text}`)
+                    if (button.text === 'Finish') {
+                        scene.scene.start('FinishGame',
+                            {
+                                selectedItems: scene.selectedItems,
+                                scenarioId: scene.scenarioId,
+                                answers: scene.answers
+                            })
+                    }
                 })
         }
     }

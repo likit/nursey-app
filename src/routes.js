@@ -1,4 +1,4 @@
-import HellWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/HelloWorld.vue'
 import ImageUpload from './components/ImageUpload.vue'
 import ImageList from './components/ImageList.vue'
 import CreateLesson from './components/CreateLesson.vue'
@@ -18,7 +18,7 @@ import Game from './components/Game.vue'
 export const routes = [
     {
         path: '/',
-        component: HellWorld,
+        component: HelloWorld,
         name: 'home'
     },
     {

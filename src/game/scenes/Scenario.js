@@ -35,9 +35,6 @@ export default class scenarioScene extends Phaser.Scene{
         playButton.setScale(0.10, 0.1)
         playButton.setInteractive()
         this.add.text(220,580, 'Start')
-        playButton.on('pointerdown', ()=>{
-            this.scene.start('Map', {explore: false, scenarioId: this.scenarioId})
-        })
 
         let scene = this
         db.collection('scenarios').doc(this.scenarioId)
@@ -50,6 +47,14 @@ export default class scenarioScene extends Phaser.Scene{
                     holders: doc.data()['holders'],
                     answers: doc.data()['answers'],
                 }
+                console.log(scenarioInfo.answers)
+                playButton.on('pointerdown', ()=>{
+                    scene.scene.start('Map', {
+                        explore: false,
+                        scenarioId: scene.scenarioId,
+                        answers: scenarioInfo.answers,
+                    })
+                })
                 var countDown = doc.data()['timeLimit'];
                 // var timelimit = countDown;
                 scene.rexUI.add.dialog({

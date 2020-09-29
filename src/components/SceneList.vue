@@ -1,10 +1,6 @@
 <template>
     <section class="section">
         <div class="container has-text-centered">
-            <b-loading :is-full-page="true"
-                :active.sync="scenarios.length===0"
-                :can-cancel="true">
-            </b-loading>
             <h1 class="title" v-if="lesson">{{ lesson.name }}</h1>
             <h1 class="subtitle" v-if="lesson">{{ lesson.objective }}</h1>
             <div class="has-text-right">
