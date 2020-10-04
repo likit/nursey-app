@@ -19,20 +19,24 @@ export default class playGame extends Phaser.Scene{
         this.selectedItems = data.selectedItems
         this.containerId = data.containerId
         this.answers = data.answers
+        this.playTime = data.playTime
     }
     preload() {
         this.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
+        this.clock = this.game.plugins.get('rexClock').add(this)
     }
     create(){
         /* eslint-disable no-console */
         /* eslint-enable no-console */
+        this.clock.start(this.playTime * 1000)
         this.add.image(100,100,"background")
-        let fontStyles = {
+        this.fontStyles = {
             strokeThickness: 3,
             stroke: '#000',
-            font: '32px Arial'
+            font: '20px Arial'
         }
-        this.print = this.add.text(120, 580, 'Items: ' + this.selectedItems.length, fontStyles)
+        this.timer = this.add.text(120, 530, 'Time: ' + 0, this.fontStyles)
+        this.print = this.add.text(120, 570, 'Items: ' + this.selectedItems.length, this.fontStyles)
         let backButton = this.add.image(50,580,"back")
         backButton.setScale(0.1, 0.1)
         backButton.setInteractive();
@@ -41,15 +45,17 @@ export default class playGame extends Phaser.Scene{
                 selectedItems: this.selectedItems,
                 scenarioId: this.scenarioId,
                 explore: false,
-                answers: this.answers
+                answers: this.answers,
+                playTime: this.clock.now / 1000
             })
         })
         // this.add.image(200,550,"box").setScale(0.2, 0.2)
         // var nurseImg = this.add.image(280,500,"nurse1")
-        let nurseImage = this.add.image(290,570,"nurse1")
-        nurseImage.setScale(0.6, 0.6)
+        let nurseImage = this.add.image(290,580,"nurse1")
+        nurseImage.setScale(0.5, 0.5)
         let scene = this
-        let images = []
+        this.images = []
+        let self = this
         db.collection('holders').doc(this.containerId).get().then((doc)=>{
             if(doc.exists) {
                 let container = doc.data()
@@ -66,10 +72,10 @@ export default class playGame extends Phaser.Scene{
                                     name: rec.data()['name'],
                                     description: rec.data()['description']
                                 }
-                                images.push(imageItem)
+                                self.images.push(imageItem)
                                 scene.load.image(imageItem.id, imageItem.url)
                                 scene.load.once('complete', ()=>{
-                                    createScroller(scene, images)
+                                    createScroller(self, self.images)
                                     console.log(imageItem.id)
                                 })
                                 scene.load.start()
@@ -80,14 +86,18 @@ export default class playGame extends Phaser.Scene{
             }
         })
     }
+    update() {
+        this.playTime = this.clock.now / 1000
+        this.timer.text = 'Time: ' + this.playTime.toFixed(0) + 's'
+    }
 }
 
 let createScroller = function(scene, data) {
     scene.rexUI.add.scrollablePanel({
         x: 190,
-        y: 200,
+        y: 280,
         width: 330,
-        height: 320,
+        height: 420,
         scrollMode: 1,
         background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 10, COLOR_PRIMARY),
         panel: {
@@ -184,7 +194,7 @@ let createTable = function (scene, data, rows) {
 
 let createIcon = function (scene, item) {
     let itemIcon = scene.add.image(0, 0, item.id)
-    itemIcon.setScale(0.6,0.6)
+    itemIcon.setScale(0.5,0.5)
     let label = scene.rexUI.add.label({
         orientation: 'y',
         icon: itemIcon,

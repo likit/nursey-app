@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import room from '../assets/room3.png'
+import room from '../assets/room4.png'
 
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
@@ -14,8 +14,10 @@ export default class Map extends Phaser.Scene{
         this.explore = data.explore
         this.selectedItems = data.selectedItems === undefined ? [] : data.selectedItems
         this.answers = data.answers === undefined ? [] : data.answers
+        this.playTime = data.playTime === undefined ? 0 : data.playTime
     }
     preload(){
+        this.clock = this.game.plugins.get('rexClock').add(this)
         this.load.image("tiles", room)
         this.load.scenePlugin({
             key: 'rexuiplugin',
@@ -41,11 +43,15 @@ export default class Map extends Phaser.Scene{
         const tiles = map.addTilesetImage("tiles")
         map.createStaticLayer(0, tiles, 10, 150)
         let playButton
-        if(this.explore) {
+        if (this.explore) {
             playButton = this.add.image(190, 580, "play")
             playButton.setScale(0.10, 0.1)
             playButton.setInteractive()
             this.add.text(220,580, 'Play')
+        } else {
+            this.timer = this.add.text(50, 550, 'Time: ' + 0, this.fontStyles)
+            this.clock.start(this.playTime * 1000)
+            console.log('clock start at' + this.playTime / 1000)
         }
         let content = ''
         if(this.explore) {
@@ -103,7 +109,8 @@ export default class Map extends Phaser.Scene{
                                     scenarioId: this.scenarioId,
                                     selectedItems: this.selectedItems,
                                     containerId: containerId,
-                                    answers: this.answers
+                                    answers: this.answers,
+                                    playTime: this.playTime
                                 })
                         }
                     }
@@ -123,7 +130,7 @@ export default class Map extends Phaser.Scene{
                     })
             })
         } else {
-            this.add.text(100,550, 'Selected Items: ' + this.selectedItems.length)
+            this.add.text(150,550, 'Selected Items: ' + this.selectedItems.length)
             let buttons = this.rexUI.add.buttons({
                 x: 200, y: 600,
                 width: 300,
@@ -146,10 +153,24 @@ export default class Map extends Phaser.Scene{
                             {
                                 selectedItems: scene.selectedItems,
                                 scenarioId: scene.scenarioId,
-                                answers: scene.answers
+                                answers: scene.answers,
+                                playTime: scene.playTime
+                            })
+                    }
+                    if (button.text === 'List') {
+                        scene.scene.start('ListItem',
+                            {
+                                selectedItems: scene.selectedItems,
+                                scenarioId: scene.scenarioId,
                             })
                     }
                 })
+        }
+    }
+    update() {
+        if (!this.explore) {
+            this.playTime = this.clock.now / 1000
+            this.timer.text = 'Time: ' + this.playTime.toFixed(0) + 's'
         }
     }
 }

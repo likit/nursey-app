@@ -10,9 +10,10 @@
 import PlayGame from '../game/scenes/PlayGame'
 import BootGame from '../game/scenes/BootGame'
 import PickItem from '../game/scenes/PickItem'
-import ScenarioScene from "@/game/scenes/Scenario";
+import ScenarioScene from "@/game/scenes/Scenario"
 import Map from '../game/scenes/Map'
-import FinishGame from "@/game/scenes/FinishGame";
+import FinishGame from "@/game/scenes/FinishGame"
+import ListItem from "@/game/scenes/ListItem"
 
 export default {
         name: 'Game',
@@ -37,7 +38,8 @@ export default {
                 this.gameInstance.scene.add("PickItem", PickItem)
                 this.gameInstance.scene.add("ScenarioScene", ScenarioScene)
                 this.gameInstance.scene.add("FinishGame", FinishGame)
-                this.gameInstance.scene.start("BootGame",
+              this.gameInstance.scene.add("ListItem", ListItem)
+              this.gameInstance.scene.start("BootGame",
                     {scenarioId: self.$route.params.scenarioId})
                 game.resizeGame(this.gameInstance);
                 window.addEventListener("resize", ()=>game.resizeGame(this.gameInstance));

@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
+import ClockPlugin from "phaser3-rex-plugins/plugins/clock-plugin";
 
 function launch(containerId) {
     let game = new Phaser.Game({
@@ -16,6 +17,11 @@ function launch(containerId) {
             }
         },
         plugins: {
+            global: [{
+                key: 'rexClock',
+                plugin: ClockPlugin,
+                start: true,
+            }],
             scene: [{
                 key: 'rexUI',
                 plugin: UIPlugin,
