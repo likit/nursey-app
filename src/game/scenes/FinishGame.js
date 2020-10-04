@@ -15,6 +15,7 @@ export default class finishGame extends Phaser.Scene {
         this.selectedItems = data.selectedItems
         this.answers = data.answers
         this.scenarioId = data.scenarioId
+        this.playTime = data.playTime
     }
 
     preload() {
@@ -137,7 +138,7 @@ export default class finishGame extends Phaser.Scene {
             }
         })
         this.print = this.add.text(50, 430, 'Total Points: ' + totalPoints, fontStyles)
-        this.print = this.add.text(190, 430, 'Total Time: ' + 10 + 's', fontStyles)
+        this.print = this.add.text(190, 430, 'Total Time: ' + this.playTime + 's', fontStyles)
         let backButton = this.add.image(50, 580, "back")
         backButton.setScale(0.1, 0.1)
         backButton.setInteractive();
