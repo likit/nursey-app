@@ -32,7 +32,6 @@ export default class scenarioScene extends Phaser.Scene{
         let playButton = this.add.image(190, 580, "play")
         playButton.setScale(0.10, 0.1)
         playButton.setInteractive()
-        this.add.text(220,580, 'Start')
 
         let scene = this
         db.collection('scenarios').doc(this.scenarioId)

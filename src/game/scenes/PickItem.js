@@ -8,6 +8,11 @@ const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
 
+var fontStyles = {
+    strokeThickness: 1,
+    stroke: '#000',
+    font: '16px Arial'
+}
 
 export default class playGame extends Phaser.Scene{
     constructor() {
@@ -203,7 +208,7 @@ let createIcon = function (scene, item) {
     let label = scene.rexUI.add.label({
         orientation: 'y',
         icon: itemIcon,
-        text: scene.add.text(0, 0, item.name),
+        text: scene.add.text(0, 0, item.name, fontStyles),
 
         space: { icon: 6 }
     });

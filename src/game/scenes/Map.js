@@ -51,9 +51,8 @@ export default class Map extends Phaser.Scene{
             playButton = this.add.image(190, 580, "play")
             playButton.setScale(0.10, 0.1)
             playButton.setInteractive()
-            this.add.text(220,580, 'Play', this.fontStyles)
         } else {
-            this.timer = this.add.text(50, 550, 'Time: ' + 0, this.fontStyles)
+            this.timer = this.add.text(60, 550, 'Time: ' + 0, this.fontStyles)
             this.clock.start(this.playTime * 1000)
         }
         let content = ''
@@ -136,7 +135,7 @@ export default class Map extends Phaser.Scene{
                     })
             })
         } else {
-            this.add.text(150,550, 'Selected Items: ' + this.selectedItems.length, this.fontStyles)
+            this.add.text(170,550, 'Selected Items: ' + this.selectedItems.length, this.fontStyles)
             let buttons = this.rexUI.add.buttons({
                 x: 200, y: 600,
                 width: 300,
@@ -253,7 +252,9 @@ var createButton = function (scene, text) {
         height: 40,
         background: scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, COLOR_LIGHT),
         text: scene.add.text(0, 0, text, {
-            fontSize: 18
+            font: '18px Arial',
+            strokeThickness: 2,
+            stroke: '#000',
         }),
         space: {
             left: 10,
@@ -353,7 +354,7 @@ let getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
         fixedWidth: fixedWidth,
         fixedHeight: fixedHeight,
 
-        fontSize: '14px',
+        fontSize: '16px',
         wrap: {
             mode: 'word',
             width: wrapWidth

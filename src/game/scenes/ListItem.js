@@ -9,6 +9,11 @@ const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
 
+var fontStyles = {
+    strokeThickness: 1,
+    stroke: '#000',
+    font: '16px Arial'
+}
 
 export default class listItem extends Phaser.Scene {
     constructor() {
@@ -50,7 +55,7 @@ export default class listItem extends Phaser.Scene {
             })
         })
 
-        this.print = this.add.text(0, 0, '');
+        // this.print = this.add.text(0, 0, '');
         var scrollablePanel = this.rexUI.add.scrollablePanel({
             x: 180,
             y: 300,
@@ -104,7 +109,8 @@ export default class listItem extends Phaser.Scene {
                         return;
                     }
                     var category = label.getParentSizer().name;
-                    print.text += `${category}:${label.text}\n`;
+                    console.log(category)
+                    // print.text += `${category}:${label.text}\n`;
                 });
         })
     }
@@ -125,7 +131,7 @@ var createPanel = function (scene, data) {
 var createTable = function (scene, data, rows) {
     var title = scene.rexUI.add.label({
         orientation: 'x',
-        text: scene.add.text(0, 0, 'Items'),
+        text: scene.add.text(0, 0, 'Items', fontStyles),
     });
 
     var items = data
@@ -183,7 +189,7 @@ let createIcon = function (scene, item) {
     let label = scene.rexUI.add.label({
         orientation: 'y',
         icon: itemIcon,
-        text: scene.add.text(0, 0, item.name),
+        text: scene.add.text(0, 0, item.name, fontStyles),
 
         space: { icon: 6 }
     });
