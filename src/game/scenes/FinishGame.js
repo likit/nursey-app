@@ -138,7 +138,7 @@ export default class finishGame extends Phaser.Scene {
             }
         })
         this.print = this.add.text(50, 430, 'Total Points: ' + totalPoints, fontStyles)
-        this.print = this.add.text(190, 430, 'Total Time: ' + this.playTime + 's', fontStyles)
+        this.print = this.add.text(190, 430, 'Total Time: ' + this.playTime.toFixed(0) + 's', fontStyles)
         let backButton = this.add.image(50, 580, "back")
         backButton.setScale(0.1, 0.1)
         backButton.setInteractive();
