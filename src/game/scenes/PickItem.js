@@ -146,7 +146,7 @@ let createPanel = function (scene, data) {
          )
          */
         .add(
-            createTable(scene, data, 1), // child
+            createTable(scene, data, 2), // child
             { expand: true }
         )
     return sizer;
