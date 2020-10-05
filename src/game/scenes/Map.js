@@ -28,8 +28,6 @@ export default class Map extends Phaser.Scene{
     }
     create(){
         this.add.rectangle(185, 380, 362, 320, 0xe0e0d1);
-        console.log('In Map scene')
-        console.log(this.user)
         const level = []
         let row = []
         for(let i=0; i<=132;i = i + 11) {
@@ -38,6 +36,11 @@ export default class Map extends Phaser.Scene{
             }
             level.push(row)
             row = []
+        }
+        this.fontStyles = {
+            strokeThickness: 3,
+            stroke: '#000',
+            font: '20px Arial'
         }
         this.add.image(300,130,"nurse2")
         const map = this.make.tilemap({key: "map", data: level, tileWidth: 32, tileHeight: 32})
@@ -48,7 +51,7 @@ export default class Map extends Phaser.Scene{
             playButton = this.add.image(190, 580, "play")
             playButton.setScale(0.10, 0.1)
             playButton.setInteractive()
-            this.add.text(220,580, 'Play')
+            this.add.text(220,580, 'Play', this.fontStyles)
         } else {
             this.timer = this.add.text(50, 550, 'Time: ' + 0, this.fontStyles)
             this.clock.start(this.playTime * 1000)
@@ -133,7 +136,7 @@ export default class Map extends Phaser.Scene{
                     })
             })
         } else {
-            this.add.text(150,550, 'Selected Items: ' + this.selectedItems.length)
+            this.add.text(150,550, 'Selected Items: ' + this.selectedItems.length, this.fontStyles)
             let buttons = this.rexUI.add.buttons({
                 x: 200, y: 600,
                 width: 300,
