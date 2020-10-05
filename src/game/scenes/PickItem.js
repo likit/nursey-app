@@ -8,19 +8,22 @@ const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
 
-var cachedImages = []
-var selectedItemIds = []
 
 export default class playGame extends Phaser.Scene{
     constructor() {
         super("PickItem");
     }
     init(data) {
+        this.user = data.user
         this.scenarioId = data.scenarioId
         this.selectedItems = data.selectedItems
         this.containerId = data.containerId
         this.answers = data.answers
         this.playTime = data.playTime
+        this.selectedItemIds = []
+        this.selectedItems.forEach((item)=>{
+            this.selectedItemIds.push(item.id)
+        })
     }
     preload() {
         this.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
@@ -29,6 +32,8 @@ export default class playGame extends Phaser.Scene{
     create(){
         /* eslint-disable no-console */
         /* eslint-enable no-console */
+        console.log('In PickItem scene')
+        console.log(this.user)
         this.clock.start(this.playTime * 1000)
         this.add.image(100,100,"background")
         this.fontStyles = {
@@ -47,6 +52,7 @@ export default class playGame extends Phaser.Scene{
                 scenarioId: this.scenarioId,
                 explore: false,
                 answers: this.answers,
+                user: this.user,
                 playTime: this.clock.now / 1000
             })
         })
@@ -158,16 +164,14 @@ let createTable = function (scene, data, rows) {
         item = items[i];
         r = i % rows;
         c = (i - r) / rows;
-        if (!cachedImages.includes(item.id)) {
-            table.add(
-                createIcon(scene, item),
-                c,
-                r,
-                'top',
-                0,
-                true
-            )
-        }
+        table.add(
+            createIcon(scene, item),
+            c,
+            r,
+            'top',
+            0,
+            true
+        )
     }
 
     return scene.rexUI.add.sizer({
@@ -216,17 +220,17 @@ let createIcon = function (scene, item) {
                 scene.selectedItems = scene.selectedItems.filter((selItem)=>{
                     return selItem.id !== item.id
                 })
-                selectedItemIds = []
+                scene.selectedItemIds = []
                 scene.selectedItems.forEach((i)=>{
-                    selectedItemIds.push(i.id)
+                    scene.selectedItemIds.push(i.id)
                 })
                 scene.selectedItems = scene.selectedItems.filter((selItem)=>selItem.image !== null)
             } else {
                 label.getElement('icon').alpha = 0.3
-                if (!selectedItemIds.includes(item.id)) {
-                    console.log(selectedItemIds)
+                if (!scene.selectedItemIds.includes(item.id)) {
                     scene.selectedItems.push(item)
-                    selectedItemIds.push(item.id)
+                    scene.selectedItemIds.push(item.id)
+                    console.log(scene.selectedItemIds)
                 }
             }
             scene.print.text = 'Items: ' + scene.selectedItems.length;

@@ -1,4 +1,8 @@
 import Phaser from 'phaser'
+import firebase from "firebase";
+import {firebaseApp} from "@/firebase-config";
+
+const db = firebaseApp.firestore();
 
 const Random = Phaser.Math.Between;
 
@@ -12,6 +16,7 @@ export default class finishGame extends Phaser.Scene {
     }
 
     init(data) {
+        this.user = data.user
         this.selectedItems = data.selectedItems
         this.answers = data.answers
         this.scenarioId = data.scenarioId
@@ -25,7 +30,9 @@ export default class finishGame extends Phaser.Scene {
     create() {
         /* eslint-disable no-console */
         /* eslint-enable no-console */
-        var totalPoints = 0
+        this.totalPoints = 0
+        console.log('In Finish scene')
+        console.log(this.user)
 
         this.add.image(100, 100, "background")
         let fontStyles = {
@@ -132,28 +139,28 @@ export default class finishGame extends Phaser.Scene {
                     .scrollToBottom()
                 console.log(`Create ${itemCount} items`)
             })
+        console.log('answers:')
+        console.log(mainScene.answers)
         this.selectedItems.forEach((item)=>{
             if (mainScene.answers.includes(item.id)) {
-                totalPoints = totalPoints + 1
+                this.totalPoints = this.totalPoints + 1
+            } else {
+                this.totalPoints = this.totalPoints - 1
             }
         })
-        this.print = this.add.text(50, 430, 'Total Points: ' + totalPoints, fontStyles)
+        this.print = this.add.text(50, 430, 'Total Points: ' + this.totalPoints, fontStyles)
         this.print = this.add.text(190, 430, 'Total Time: ' + this.playTime.toFixed(0) + 's', fontStyles)
-        let backButton = this.add.image(50, 580, "back")
-        backButton.setScale(0.1, 0.1)
-        backButton.setInteractive();
-        backButton.on('pointerdown', () => {
-            this.scene.start('Map', {
-                selectedItems: this.selectedItems,
-                scenarioId: this.scenarioId,
-                explore: false,
-                answers: this.answers
-            })
-        })
         // this.add.image(200,550,"box").setScale(0.2, 0.2)
         // var nurseImg = this.add.image(280,500,"nurse1")
-        let nurseImage = this.add.image(290, 570, "nurse1")
+        let nurseImage = this.add.image(290, 580, "nurse1")
         nurseImage.setScale(0.6, 0.6)
+        let content
+        if (this.totalPoints === this.answers.length) {
+            content = 'เยี่ยมยอดมากค่ะ'
+        } else {
+            content = 'พยายามฝึกต่อไปมาก ๆ นะคะ'
+        }
+        createTextBox(this, 20, 500, { wrapWidth: 150, }).start(content, 50);
     }
 }
 
@@ -194,7 +201,41 @@ let CreateFooterButton = function (scene, text, orientation) {
                     scenarioId: scene.scenarioId
                 })
             } else {
-                window.location.replace('/#/lessons')
+                let selectedItemIds = []
+                let correctAnswers = []
+                let wrongAnswers = []
+                let unpickedItems = []
+                scene.selectedItems.forEach((i)=>{
+                    selectedItemIds.push(i.id)
+                })
+                selectedItemIds.forEach((i)=>{
+                    if (scene.answers.includes(i)) {
+                        correctAnswers.push(i)
+                    } else {
+                        wrongAnswers.push(i)
+                    }
+                })
+                scene.answers.forEach((i)=>{
+                    if (!selectedItemIds.includes(i)) {
+                        unpickedItems.push(i)
+                    }
+                })
+                console.log(correctAnswers)
+                console.log(wrongAnswers)
+                console.log(unpickedItems)
+                db.collection('plays').add({
+                    scenarioId: scene.scenarioId,
+                    email: scene.user,
+                    selectedItems: selectedItemIds,
+                    wrongAnswers: wrongAnswers,
+                    correctAnswers: correctAnswers,
+                    unpickedItems: unpickedItems,
+                    score: scene.totalPoints,
+                    time: scene.playTime,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(function(){
+                    window.location.replace('/#/lessons')
+                });
             }
         })
         .on('pointerover', function(){
@@ -222,4 +263,81 @@ let createItems = function (mainScene) {
         })
     })
     return items
+}
+
+const GetValue = Phaser.Utils.Objects.GetValue;
+let createTextBox = function (scene, x, y, config) {
+    let wrapWidth = GetValue(config, 'wrapWidth', 0);
+    let fixedWidth = GetValue(config, 'fixedWidth', 0);
+    let fixedHeight = GetValue(config, 'fixedHeight', 0);
+    let textBox = scene.rexUI.add.textBox({
+        x: x,
+        y: y,
+
+        background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
+            .setStrokeStyle(2, COLOR_LIGHT),
+
+        // text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
+        text: getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
+
+        action: scene.add.image(0, 0, 'nextPage').setTint(COLOR_LIGHT).setVisible(false),
+
+        space: {
+            left: 20,
+            right: 20,
+            top: 20,
+            bottom: 20,
+            icon: 10,
+            text: 10,
+        }
+    })
+        .setOrigin(0)
+        .layout();
+
+    textBox
+        .setInteractive()
+        .on('pointerdown', function () {
+            let icon = this.getElement('action').setVisible(false);
+            this.resetChildVisibleState(icon);
+            if (this.isTyping) {
+                this.stop(true);
+            } else {
+                this.typeNextPage();
+            }
+        }, textBox)
+        .on('pageend', function () {
+            if (this.isLastPage) {
+                return;
+            }
+
+            let icon = this.getElement('action').setVisible(true);
+            this.resetChildVisibleState(icon);
+            icon.y -= 30;
+            scene.tweens.add({
+                targets: icon,
+                y: '+=30', // '+=100'
+                ease: 'Bounce', // 'Cubic', 'Elastic', 'Bounce', 'Back'
+                duration: 500,
+                repeat: 0, // -1: infinity
+                yoyo: false
+            });
+        }, textBox)
+    //.on('type', function () {
+    //})
+
+    return textBox;
+}
+
+let getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
+    return scene.rexUI.add.BBCodeText(0, 0, '', {
+        fixedWidth: fixedWidth,
+        fixedHeight: fixedHeight,
+
+        fontSize: '14px',
+        wrap: {
+            mode: 'word',
+            width: wrapWidth
+        },
+        maxLines: 3
+    })
 }

@@ -40,7 +40,7 @@ export default {
                 this.gameInstance.scene.add("FinishGame", FinishGame)
               this.gameInstance.scene.add("ListItem", ListItem)
               this.gameInstance.scene.start("BootGame",
-                    {scenarioId: self.$route.params.scenarioId})
+                    {scenarioId: self.$route.params.scenarioId, user: self.$store.state.user})
                 game.resizeGame(this.gameInstance);
                 window.addEventListener("resize", ()=>game.resizeGame(this.gameInstance));
             })

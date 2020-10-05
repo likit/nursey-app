@@ -18,15 +18,19 @@ export default class listItem extends Phaser.Scene {
     init(data) {
         this.scenarioId = data.scenarioId
         this.selectedItems = data.selectedItems
+        this.user = data.user
+        this.playTime = data.playTime === undefined ? 0 : data.playTime
     }
 
     preload() {
         this.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
+        this.clock = this.game.plugins.get('rexClock').add(this)
     }
 
     create() {
         /* eslint-disable no-console */
         /* eslint-enable no-console */
+        this.clock.start(this.playTime * 1000)
         this.add.image(100, 100, "background")
         this.fontStyles = {
             strokeThickness: 3,
@@ -41,7 +45,9 @@ export default class listItem extends Phaser.Scene {
                 selectedItems: this.selectedItems,
                 scenarioId: this.scenarioId,
                 explore: false,
-                answers: this.answers
+                answers: this.answers,
+                user: this.user,
+                playTime: this.clock.now / 1000
             })
         })
 

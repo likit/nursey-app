@@ -17,6 +17,7 @@ export default class scenarioScene extends Phaser.Scene{
     }
     init(data) {
         this.scenarioId = data.scenarioId
+        this.user = data.user
     }
     preload(){
         this.load.image("background", bg)
@@ -53,6 +54,7 @@ export default class scenarioScene extends Phaser.Scene{
                         explore: false,
                         scenarioId: scene.scenarioId,
                         answers: scenarioInfo.answers,
+                        user: scene.user
                     })
                 })
                 var countDown = doc.data()['timeLimit'];

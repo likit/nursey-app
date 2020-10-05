@@ -10,6 +10,7 @@ export default class Map extends Phaser.Scene{
         super("Map");
     }
     init(data) {
+        this.user = data.user
         this.scenarioId = data.scenarioId
         this.explore = data.explore
         this.selectedItems = data.selectedItems === undefined ? [] : data.selectedItems
@@ -26,9 +27,10 @@ export default class Map extends Phaser.Scene{
         });
     }
     create(){
-        console.log(this.answers)
         this.add.image(100,100,"background")
         this.add.rectangle(185, 380, 362, 320, 0xe0e0d1);
+        console.log('In Map scene')
+        console.log(this.user)
         const level = []
         let row = []
         for(let i=0; i<=132;i = i + 11) {
@@ -51,7 +53,6 @@ export default class Map extends Phaser.Scene{
         } else {
             this.timer = this.add.text(50, 550, 'Time: ' + 0, this.fontStyles)
             this.clock.start(this.playTime * 1000)
-            console.log('clock start at' + this.playTime / 1000)
         }
         let content = ''
         if(this.explore) {
@@ -111,7 +112,8 @@ export default class Map extends Phaser.Scene{
                                     selectedItems: this.selectedItems,
                                     containerId: containerId,
                                     answers: this.answers,
-                                    playTime: this.playTime
+                                    playTime: this.playTime,
+                                    user: scene.user
                                 })
                         }
                     }
@@ -127,7 +129,8 @@ export default class Map extends Phaser.Scene{
                 this.scene.start('ScenarioScene',
                     {
                         scenarioId: scene.scenarioId,
-                        explore: false
+                        explore: false,
+                        user: scene.user
                     })
             })
         } else {
@@ -149,13 +152,14 @@ export default class Map extends Phaser.Scene{
             buttons
                 .on('button.click', function (button) {
                     console.log(`Click button-${button.text}`)
-                    if (button.text === 'Finish') {
+                    if (button.text === 'Finish' && scene.selectedItems.length > 0) {
                         scene.scene.start('FinishGame',
                             {
                                 selectedItems: scene.selectedItems,
                                 scenarioId: scene.scenarioId,
                                 answers: scene.answers,
-                                playTime: scene.playTime
+                                playTime: scene.playTime,
+                                user: scene.user
                             })
                     }
                     if (button.text === 'List') {
@@ -163,6 +167,7 @@ export default class Map extends Phaser.Scene{
                             {
                                 selectedItems: scene.selectedItems,
                                 scenarioId: scene.scenarioId,
+                                user: scene.user
                             })
                     }
                 })
@@ -220,7 +225,6 @@ let createDialog = function(scene, title, desc, x, y) {
         .popUp(100);
     dialog
         .on('button.click', function (button, groupName, index) {
-            console.log(index)
             if (index==1) {
                 dialog.scaleDownDestroy(50)
                 dialog = undefined

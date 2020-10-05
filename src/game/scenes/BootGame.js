@@ -15,6 +15,7 @@ export default class bootGame extends Phaser.Scene{
     }
     init(data) {
         this.scenarioId = data.scenarioId
+        this.user = data.user
     }
     preload(){
         this.load.image("background", bg)
@@ -28,6 +29,8 @@ export default class bootGame extends Phaser.Scene{
         this.load.image("box", box)
     }
     create(){
-        this.scene.start("Map", {scenarioId: this.scenarioId, explore: true})
+        console.log('booting..')
+        console.log(this.user)
+        this.scene.start("Map", {scenarioId: this.scenarioId, explore: true, user: this.user})
     }
 }
