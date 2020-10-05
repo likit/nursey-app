@@ -72,6 +72,7 @@ export default class Map extends Phaser.Scene{
                 switch (t.index) {
                     case 40:
                     case 18:
+                    case 20:
                     case 29:
                         containerId = '3bQSljR3OOLT6wQcEi2Q'
                         title = 'ตู้เย็นเก็บยา'
