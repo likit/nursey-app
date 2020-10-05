@@ -9,6 +9,7 @@ const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
 
 var cachedImages = []
+var selectedItemIds = []
 
 export default class playGame extends Phaser.Scene{
     constructor() {
@@ -73,6 +74,7 @@ export default class playGame extends Phaser.Scene{
                                     description: rec.data()['description']
                                 }
                                 self.images.push(imageItem)
+                                console.log('item was pushed' + ' ' + imageItem.name)
                                 scene.load.image(imageItem.id, imageItem.url)
                                 scene.load.once('complete', ()=>{
                                     createScroller(self, self.images)
@@ -202,6 +204,11 @@ let createIcon = function (scene, item) {
 
         space: { icon: 6 }
     });
+    scene.selectedItems.forEach((selItem)=>{
+        if (selItem.id === item.id) {
+            label.getElement('icon').alpha = 0.3
+        }
+    })
     scene.rexUI.add.click(label.getElement('icon'), { threshold: 10}).on(
         'click', function() {
             if(label.getElement('icon').alpha == 0.3) {
@@ -209,13 +216,20 @@ let createIcon = function (scene, item) {
                 scene.selectedItems = scene.selectedItems.filter((selItem)=>{
                     return selItem.id !== item.id
                 })
+                selectedItemIds = []
+                scene.selectedItems.forEach((i)=>{
+                    selectedItemIds.push(i.id)
+                })
                 scene.selectedItems = scene.selectedItems.filter((selItem)=>selItem.image !== null)
             } else {
                 label.getElement('icon').alpha = 0.3
-                scene.selectedItems.push(item)
+                if (!selectedItemIds.includes(item.id)) {
+                    console.log(selectedItemIds)
+                    scene.selectedItems.push(item)
+                    selectedItemIds.push(item.id)
+                }
             }
             scene.print.text = 'Items: ' + scene.selectedItems.length;
-            console.log(item.name)
         }
     )
     return label
