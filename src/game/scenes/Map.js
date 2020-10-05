@@ -72,6 +72,13 @@ export default class Map extends Phaser.Scene{
             if (t !== null) {
                 console.log(t.index)
                 switch (t.index) {
+                    case 54:
+                    case 65:
+                    case 76:
+                        containerId = 'ebjK6vrzj2hJC8KwH0xl'
+                        title = 'ตู้ผ้า'
+                        desc = 'ตู้สำหรับผ้าต่างๆ'
+                        break
                     case 40:
                     case 18:
                     case 20:
@@ -91,8 +98,72 @@ export default class Map extends Phaser.Scene{
                     case 124:
                     case 112:
                     case 113:
+                        containerId = 'XRwRFvObBs3yhQu0mv7Y'
                         title = 'รถ feed'
                         desc = 'รถ feed'
+                        break
+                    case 98:
+                    case 109:
+                        containerId = '8aszb4fRZMgDpWRyyQNQ'
+                        title = 'รถชำระ'
+                        desc = 'รถชำระ'
+                        break
+                    case 33:
+                    case 44:
+                    case 22:
+                        containerId = 'Js3ELPDo66Ms82EnTVLn'
+                        title = 'ตู้อุปกรณ์'
+                        desc = 'ตู้เก็บอุปกรณ์'
+                        break
+                    case 26:
+                    case 37:
+                    case 15:
+                        containerId = 'j5rNJywZmfyDDforwAir'
+                        title = 'ตู้ supply'
+                        desc = 'ตู้สำหรับ supply'
+                        break
+                    case 39:
+                    case 28:
+                    case 17:
+                        containerId = 'YNPkvJq23BPPACasKqL1'
+                        title = 'ตู้ยา'
+                        desc = 'ตู้เก็บยา'
+                        break
+                    case 129:
+                    case 119:
+                    case 130:
+                    case 118:
+                        containerId = 'T4rJtjbNtSEjk3HlDtKb'
+                        title = 'ห้องน้ำ'
+                        desc = 'ห้องน้ำ'
+                        break
+                    case 94:
+                    case 72:
+                    case 61:
+                    case 58:
+                    case 69:
+                    case 102:
+                    case 91:
+                        title = 'โต๊ะข้างเตียง'
+                        desc = 'โต๊ะอยู่ข้างเตียง'
+                        break
+                    case 99:
+                    case 110:
+                        containerId = 'zoj74LSBfZhekfvGi3uX'
+                        title = 'รถทำแผล'
+                        desc = 'รถสำหรับทำแผล'
+                        break
+                    case 77:
+                    case 88:
+                        containerId = 'ErVB1BuBu9b7d2peI75d'
+                        title = 'รถ emergency'
+                        desc = 'รถฉุกเฉิน'
+                        break
+                    case 55:
+                    case 66:
+                        containerId = 'cXkNs70sEZJX23HXFb6L'
+                        title = 'รถเจาะเลือด'
+                        desc = 'รถฉุกเฉิน'
                         break
                     default:
                         title = ''
