@@ -4,7 +4,7 @@ import ClockPlugin from "phaser3-rex-plugins/plugins/clock-plugin";
 
 function launch(containerId) {
     let game = new Phaser.Game({
-        type: Phaser.AUTO,
+        type: Phaser.CANVAS,
         width: 375,
         height: 640,
         backgroundColor: '#fcd9fc',
