@@ -170,7 +170,8 @@ export default class Map extends Phaser.Scene{
                                     selectedItems: scene.selectedItems,
                                     scenarioId: scene.scenarioId,
                                     user: scene.user,
-                                    playTime: scene.playTime
+                                    playTime: scene.playTime,
+                                    answers: scene.answers
                                 })
                         }
                     }

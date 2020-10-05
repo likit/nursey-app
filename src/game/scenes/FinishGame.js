@@ -31,14 +31,13 @@ export default class finishGame extends Phaser.Scene {
         /* eslint-disable no-console */
         /* eslint-enable no-console */
         this.totalPoints = 0
-        console.log('In Finish scene')
-        console.log(this.user)
 
         let fontStyles = {
             strokeThickness: 3,
             stroke: '#000',
             font: '20px Arial'
         }
+
         let mainScene = this
         let scrollMode = 0; // 0:vertical, 1:horizontal
         let gridTable = this.rexUI.add.gridTable({

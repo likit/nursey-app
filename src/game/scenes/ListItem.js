@@ -25,6 +25,7 @@ export default class listItem extends Phaser.Scene {
         this.selectedItems = data.selectedItems
         this.user = data.user
         this.playTime = data.playTime === undefined ? 0 : data.playTime
+        this.answers = data.answers
     }
 
     preload() {
