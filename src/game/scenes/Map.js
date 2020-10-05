@@ -162,13 +162,15 @@ export default class Map extends Phaser.Scene{
                             })
                     }
                     if (button.text === 'List') {
-                        scene.scene.start('ListItem',
-                            {
-                                selectedItems: scene.selectedItems,
-                                scenarioId: scene.scenarioId,
-                                user: scene.user,
-                                playTime: scene.playTime
-                            })
+                        if (scene.selectedItems.length > 0) {
+                            scene.scene.start('ListItem',
+                                {
+                                    selectedItems: scene.selectedItems,
+                                    scenarioId: scene.scenarioId,
+                                    user: scene.user,
+                                    playTime: scene.playTime
+                                })
+                        }
                     }
                     if (button.text === 'Quit') {
                         window.location.replace('/#/lessons')

@@ -62,7 +62,7 @@ export default class scenarioScene extends Phaser.Scene{
                     width: 350,
 
                     background: scene.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0x1565c0),
-                    title: createLabel(scene, scenarioInfo.title, 16),
+                    title: createLabel(scene, scenarioInfo.title, 18),
                     toolbar: [],
                     leftToolbar: [],
                     description: createLabel(scene, scenarioInfo.description, 14),

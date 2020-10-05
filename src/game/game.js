@@ -7,7 +7,7 @@ function launch(containerId) {
         type: Phaser.CANVAS,
         width: 375,
         height: 640,
-        backgroundColor: '#fcd9fc',
+        backgroundColor: '#fc74e1',
         parent: containerId,
         physics: {
             default: 'arcade',
