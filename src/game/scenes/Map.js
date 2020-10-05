@@ -27,7 +27,6 @@ export default class Map extends Phaser.Scene{
         });
     }
     create(){
-        this.add.image(100,100,"background")
         this.add.rectangle(185, 380, 362, 320, 0xe0e0d1);
         console.log('In Map scene')
         console.log(this.user)

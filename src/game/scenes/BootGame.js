@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import bg from '../assets/bg.png'
 import nurse1 from '../assets/nurse1.png'
 import nurse2 from '../assets/nurse2.png'
 import syringe5 from '../assets/syringe5.png'
@@ -18,7 +17,6 @@ export default class bootGame extends Phaser.Scene{
         this.user = data.user
     }
     preload(){
-        this.load.image("background", bg)
         this.load.image("nurse1", nurse1)
         this.load.image("nurse2", nurse2)
         this.load.image("syringe5",  syringe5)

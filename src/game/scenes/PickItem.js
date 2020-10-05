@@ -35,7 +35,6 @@ export default class playGame extends Phaser.Scene{
         console.log('In PickItem scene')
         console.log(this.user)
         this.clock.start(this.playTime * 1000)
-        this.add.image(100,100,"background")
         this.fontStyles = {
             strokeThickness: 3,
             stroke: '#000',

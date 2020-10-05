@@ -34,7 +34,6 @@ export default class finishGame extends Phaser.Scene {
         console.log('In Finish scene')
         console.log(this.user)
 
-        this.add.image(100, 100, "background")
         let fontStyles = {
             strokeThickness: 3,
             stroke: '#000',

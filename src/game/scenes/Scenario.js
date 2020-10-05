@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import bg from '../assets/bg.png'
 import nurse1 from '../assets/nurse1.png'
 import backArrow from '../assets/arrow.png'
 import playButton from '../assets/play-button.png'
@@ -20,7 +19,6 @@ export default class scenarioScene extends Phaser.Scene{
         this.user = data.user
     }
     preload(){
-        this.load.image("background", bg)
         this.load.image("nurse1", nurse1)
         this.load.image("back", backArrow)
         this.load.image("play", playButton)
@@ -31,7 +29,6 @@ export default class scenarioScene extends Phaser.Scene{
         });
     }
     create(){
-        this.add.image(100,100,"background")
         let playButton = this.add.image(190, 580, "play")
         playButton.setScale(0.10, 0.1)
         playButton.setInteractive()

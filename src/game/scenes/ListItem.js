@@ -31,7 +31,6 @@ export default class listItem extends Phaser.Scene {
         /* eslint-disable no-console */
         /* eslint-enable no-console */
         this.clock.start(this.playTime * 1000)
-        this.add.image(100, 100, "background")
         this.fontStyles = {
             strokeThickness: 3,
             stroke: '#000',
