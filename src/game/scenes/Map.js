@@ -166,8 +166,12 @@ export default class Map extends Phaser.Scene{
                             {
                                 selectedItems: scene.selectedItems,
                                 scenarioId: scene.scenarioId,
-                                user: scene.user
+                                user: scene.user,
+                                playTime: scene.playTime
                             })
+                    }
+                    if (button.text === 'Quit') {
+                        window.location.replace('/#/lessons')
                     }
                 })
         }
