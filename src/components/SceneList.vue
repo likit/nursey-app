@@ -16,12 +16,12 @@
                     <div class="media">
                         <div class="media-left">
                             <figure class="image is-64x64">
-                                <img src="img/greeting-card.png">
+                                <img src="/img/greeting-card.png">
                             </figure>
                         </div>
                         <div class="media-content">
                             <p class="title is-4">{{ scenario.title }}</p>
-                            <p><strong>Detail:</strong> {{ scenario.description }}</p>
+                            <p v-if="scenario.description"><strong>Detail:</strong> {{ scenario.description }}</p>
                             <div class="buttons">
                                 <button @click="playScenario(scenario.id)"
                                     class="button is-success">

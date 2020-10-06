@@ -12,7 +12,7 @@ Vue.config.productionTip = false
 Vue.use(Buefy)
 Vue.use(VueRouter)
 
-const router = new VueRouter({base: process.env.BASE_URL, mode: 'history', routes: routes})
+const router = new VueRouter({routes: routes})
 router.beforeEach((to, from, next)=>{
   const requiresAuth = to.matched.some(x=>x.meta.requiresAuth)
   if(requiresAuth === true && store.state.user.loggedIn === false) {

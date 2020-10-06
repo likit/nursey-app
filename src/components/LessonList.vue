@@ -10,7 +10,7 @@
                     <div class="media">
                         <div class="media-left">
                             <figure class="image is-64x64">
-                                <img src="img/gift.png">
+                                <img src="/img/gift.png">
                             </figure>
                         </div>
                         <div class="media-content">

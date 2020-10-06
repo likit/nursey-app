@@ -65,7 +65,7 @@ export default class scenarioScene extends Phaser.Scene{
                     leftToolbar: [],
                     // description: createLabel(scene, scenarioInfo.description, 16),
                     choices: [
-                        createLabel(scene, 'Total equipments is ' + scenarioInfo.answers.length + ' items', 16),
+                        createLabel(scene, 'Total ' + scenarioInfo.answers.length + ' items', 16),
                         createLabel(scene, 'Time ' + countDown + ' seconds', 16)
                     ],
                     actions: [],

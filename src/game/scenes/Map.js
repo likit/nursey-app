@@ -138,12 +138,14 @@ export default class Map extends Phaser.Scene{
                         desc = 'ห้องน้ำ'
                         break
                     case 94:
+                    case 105:
                     case 72:
                     case 61:
                     case 58:
                     case 69:
                     case 102:
                     case 91:
+                        containerId = 'ocbgrR93na0HElDJaICA'
                         title = 'โต๊ะข้างเตียง'
                         desc = 'โต๊ะอยู่ข้างเตียง'
                         break
