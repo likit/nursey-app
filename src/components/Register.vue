@@ -2,8 +2,9 @@
 <section class="section">
   <div class="container">
       <div class="columns">
-          <div class="column">
+          <div class="column box is-one-third is-offset-4">
             <form action="#" @submit.prevent="submit">
+              <h1 class="has-text-centered title">Register</h1>
                 <b-field label="Name">
                     <b-input v-model="form.name" placeholder="Name"></b-input>
                 </b-field>
@@ -19,7 +20,11 @@
                 <b-field label="Password">
                     <b-input v-model="form.password" type="password" placeholder="Password"></b-input>
                 </b-field>
-                <b-button @click="submit()">Submit</b-button>
+              <div class="field">
+                <div class="has-text-centered">
+                  <b-button class="is-success" @click="submit()">Submit</b-button>
+                </div>
+              </div>
             </form>
           </div>
       </div>

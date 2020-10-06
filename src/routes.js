@@ -34,66 +34,111 @@ export const routes = [
     {
         path: '/dashboard',
         component: Dashboard,
-        name: 'dashboard'
+        name: 'dashboard',
+        meta: {
+            title: 'Dashboard',
+            requiresAuth: true
+        }
     },
     {
         path: '/lessons',
         component: LessonList,
-        name: 'lessons'
+        name: 'lessons',
+        meta: {
+            title: 'Lessons',
+            requiresAuth: true
+        }
     },
     {
         path: '/lesson/:lessonId/scenarios',
         component: SceneList,
-        name: 'scenes'
+        name: 'scenes',
+        meta: {
+            title: 'Scenes',
+            requiresAuth: true
+        }
     },
     {
         path: '/holder',
         component: HolderList,
-        name: 'holders'
+        name: 'holders',
+        meta: {
+            title: 'Holders',
+            requiresAuth: true
+        }
     },
     {
         path: '/image/upload',
         component: ImageUpload,
-        name: 'image-upload'
+        name: 'image-upload',
+        meta: {
+            title: 'Upload Image',
+            requiresAuth: true
+        }
     },
     {
         path: '/images',
         component: ImageList,
-        name: 'images'
+        name: 'images',
+        meta: {
+            title: 'Image List',
+            requiresAuth: true
+        }
     },
     {
         path: '/holder/:holderId/images/add',
         component: HolderAddImage,
-        name: 'add-images'
+        name: 'add-images',
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/create-lesson',
         component: CreateLesson,
-        name: 'create-lesson'
+        name: 'create-lesson',
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/lesson/:lessonId/scenarios/create',
         component: CreateScene,
-        name: 'create-scenario'
+        name: 'create-scenario',
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/scenarios/:scenarioId/edit',
         component: EditScene,
-        name: 'edit-scenario'
+        name: 'edit-scenario',
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/holder/create',
         component: CreateHolder,
-        name: 'create-holder'
+        name: 'create-holder',
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/admin/playstats',
         component: PlayStat,
-        name: 'playstats'
+        name: 'playstats',
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/scenario/:scenarioId/play',
         component: Game,
-        name: 'play-scenario'
+        name: 'play-scenario',
+        meta: {
+            requiresAuth: true
+        }
     }
 ]

@@ -12,13 +12,23 @@ Vue.config.productionTip = false
 Vue.use(Buefy)
 Vue.use(VueRouter)
 
+const router = new VueRouter({base: process.env.BASE_URL, mode: 'history', routes: routes})
+router.beforeEach((to, from, next)=>{
+  const requiresAuth = to.matched.some(x=>x.meta.requiresAuth)
+  if(requiresAuth === true && store.state.user.loggedIn === false) {
+    next('/login')
+  } else {
+    next()
+  }
+})
+
 var app = '';
 firebase.auth().onAuthStateChanged((user) => {
   store.dispatch("fetchUser", user);
   if(!app) {
     app = new Vue({
       store,
-      router: new VueRouter({routes: routes}),
+      router: router,
       render: h => h(App),
     }).$mount('#app')
   }
