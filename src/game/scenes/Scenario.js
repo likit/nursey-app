@@ -38,13 +38,12 @@ export default class scenarioScene extends Phaser.Scene{
             .get().then(function(doc){
             if(doc.exists) {
                 scenarioInfo = {
-                    title: doc.data()['title'],
+                    title: 'Scenario',
                     id: doc.id,
-                    description: doc.data()['description'],
+                    description: doc.data()['title'],
                     holders: doc.data()['holders'],
                     answers: doc.data()['answers'],
                 }
-                console.log(scenarioInfo.answers)
                 playButton.on('pointerdown', ()=>{
                     scene.scene.start('Map', {
                         explore: false,
@@ -64,17 +63,17 @@ export default class scenarioScene extends Phaser.Scene{
                     title: createLabel(scene, scenarioInfo.title, 18),
                     toolbar: [],
                     leftToolbar: [],
-                    description: createLabel(scene, scenarioInfo.description, 14),
+                    // description: createLabel(scene, scenarioInfo.description, 16),
                     choices: [
-                        createLabel(scene, 'จำนวนอุปกรณ์คือ ' + scenarioInfo.answers.length + ' ชิ้น', 14),
-                        createLabel(scene, 'เวลาทั้งหมดคือ ' + countDown + ' วินาที', 14)
+                        createLabel(scene, 'Total equipments is ' + scenarioInfo.answers.length + ' items', 16),
+                        createLabel(scene, 'Time ' + countDown + ' seconds', 16)
                     ],
                     actions: [],
                     space: {
                         left: 20,
                         right: 20,
                         top: -20,
-                        bottom: -20,
+                        bottom: 20,
 
                         title: 25,
                         titleLeft: 30,
@@ -100,7 +99,7 @@ export default class scenarioScene extends Phaser.Scene{
                     align: {
                         title: 'center',
                         // content: 'left',
-                        // description: 'left',
+                        // description: 'center',
                         // choices: 'left',
                         actions: 'right', // 'center'|'left'|'right'
                     },

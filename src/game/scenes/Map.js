@@ -223,7 +223,6 @@ export default class Map extends Phaser.Scene{
             let scene = this
             buttons
                 .on('button.click', function (button) {
-                    console.log(`Click button-${button.text}`)
                     if (button.text === 'Finish' && scene.selectedItems.length > 0) {
                         scene.scene.start('FinishGame',
                             {

@@ -4,8 +4,6 @@ import {firebaseApp} from "@/firebase-config";
 
 const db = firebaseApp.firestore();
 
-const Random = Phaser.Math.Between;
-
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
@@ -131,14 +129,10 @@ export default class finishGame extends Phaser.Scene {
             .setOrigin(1, 1)
             .setInteractive()
             .on('pointerdown', function () {
-                var itemCount = Random(10, 50);
                 gridTable
                     .setItems(createItems(mainScene))
                     .scrollToBottom()
-                console.log(`Create ${itemCount} items`)
             })
-        console.log('answers:')
-        console.log(mainScene.answers)
         this.selectedItems.forEach((item)=>{
             if (mainScene.answers.includes(item.id)) {
                 this.totalPoints = this.totalPoints + 1
@@ -193,7 +187,6 @@ let CreateFooterButton = function (scene, text, orientation) {
     })
         .setInteractive()
         .on('pointerdown', function () {
-            console.log(`Pointer down ${text}`)
             if (text === 'Restart') {
                 scene.scene.start('ScenarioScene', {
                     scenarioId: scene.scenarioId
@@ -218,9 +211,6 @@ let CreateFooterButton = function (scene, text, orientation) {
                         unpickedItems.push(i)
                     }
                 })
-                console.log(correctAnswers)
-                console.log(wrongAnswers)
-                console.log(unpickedItems)
                 db.collection('plays').add({
                     scenarioId: scene.scenarioId,
                     email: scene.user,
@@ -246,7 +236,6 @@ let CreateFooterButton = function (scene, text, orientation) {
 
 let createItems = function (mainScene) {
     let items = []
-    console.log(mainScene.answers)
     mainScene.selectedItems.forEach((item)=>{
         let color
         if (mainScene.answers.includes(item.id)) {

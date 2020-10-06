@@ -27,8 +27,6 @@ export default class bootGame extends Phaser.Scene{
         this.load.image("box", box)
     }
     create(){
-        console.log('booting..')
-        console.log(this.user)
         this.scene.start("Map", {scenarioId: this.scenarioId, explore: true, user: this.user})
     }
 }

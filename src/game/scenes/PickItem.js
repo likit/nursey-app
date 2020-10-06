@@ -37,8 +37,6 @@ export default class playGame extends Phaser.Scene{
     create(){
         /* eslint-disable no-console */
         /* eslint-enable no-console */
-        console.log('In PickItem scene')
-        console.log(this.user)
         this.clock.start(this.playTime * 1000)
         this.fontStyles = {
             strokeThickness: 3,
@@ -84,11 +82,9 @@ export default class playGame extends Phaser.Scene{
                                     description: rec.data()['description']
                                 }
                                 self.images.push(imageItem)
-                                console.log('item was pushed' + ' ' + imageItem.name)
                                 scene.load.image(imageItem.id, imageItem.url)
                                 scene.load.once('complete', ()=>{
                                     createScroller(self, self.images)
-                                    console.log(imageItem.id)
                                 })
                                 scene.load.start()
                             })
@@ -234,7 +230,6 @@ let createIcon = function (scene, item) {
                 if (!scene.selectedItemIds.includes(item.id)) {
                     scene.selectedItems.push(item)
                     scene.selectedItemIds.push(item.id)
-                    console.log(scene.selectedItemIds)
                 }
             }
             scene.print.text = 'Items: ' + scene.selectedItems.length;

@@ -109,9 +109,6 @@ export default class listItem extends Phaser.Scene {
                     if (!label.getTopmostSizer().isInTouching()) {
                         return;
                     }
-                    var category = label.getParentSizer().name;
-                    console.log(category)
-                    // print.text += `${category}:${label.text}\n`;
                 });
         })
     }
@@ -207,7 +204,6 @@ let createIcon = function (scene, item) {
                 scene.selectedItems.push(item)
             }
             scene.print.text = 'Items: ' + scene.selectedItems.length;
-            console.log(item.name)
         }
     )
     return label
