@@ -27,6 +27,13 @@
             <b-field label="Description">
                 <b-input type="textarea" v-model="desc"></b-input>
             </b-field>
+            <b-field label="ประเภท">
+              <b-select placeholder="เลือกประเภท" v-model="group" expanded>
+                <option v-for="gr in itemGroups" :key="gr" :value="gr">
+                  {{ gr }}
+                </option>
+              </b-select>
+            </b-field>
             <div class="buttons">
                 <button @click="resetForm" class="button is-danger">Reset</button>
                 <button @click="uploadFile" class="button is-primary">Submit</button>
@@ -49,11 +56,13 @@ export default {
     name: 'image-upload',
     data () {
         return {
-            imageFile: null,
-            name: '',
-            desc: '',
-            categories: [],
-            category: null,
+          imageFile: null,
+          name: '',
+          desc: '',
+          categories: [],
+          category: null,
+          group: '',
+          itemGroups: []
         }
     },
     computed: {
@@ -67,11 +76,12 @@ export default {
     },
     methods: {
         uploadFile: function() {
-            var self = this;
+            let self = this;
             storageRef.child(self.category+'/'+self.imageFile.name)
                 .put(self.imageFile).then(function() {
                     db.collection('images').add({
                         name: self.name,
+                        group: self.group,
                         description: self.desc,
                         category: self.category,
                         fileUrl: self.imageFileRef.fullPath,
@@ -99,12 +109,19 @@ export default {
         }
     },
     mounted: function () {
-        var self = this;
-        categoriesRef.get().then(function(snapshot) {
-            snapshot.forEach(function(doc) {
-                self.categories.push(doc);
-            });
-        });
+      let self = this;
+      let itemGroupRef = db.collection('itemGroups')
+
+      itemGroupRef.get().then((snapshot)=>{
+        snapshot.forEach((g)=>{
+          self.itemGroups.push(g.data()['name'])
+        })
+      })
+      categoriesRef.get().then(function(snapshot) {
+          snapshot.forEach(function(doc) {
+              self.categories.push(doc);
+          });
+      });
     }
 }
 </script>
