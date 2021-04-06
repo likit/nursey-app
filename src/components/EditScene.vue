@@ -101,9 +101,9 @@
             </b-tab-item>
           <b-tab-item label="Keys">
             <template #header>
-              <span> Keys <b-tag rounded>{{ answers.length }}</b-tag> </span>
+              <span> Keys <b-tag rounded>{{ filteredAnswers.length }}</b-tag> </span>
             </template>
-            <div class="card" v-for="image in answers" :key="'key'+image.id">
+            <div class="card" v-for="image in filteredAnswers" :key="'key'+image.id">
               <div class="card-content">
                 <div class="media">
                   <div class="media-left">
@@ -162,7 +162,18 @@ export default {
             return self.holders.filter(function(item) {
                 return self.selectedItems.indexOf(item) < 0;
             });
-        }
+        },
+      filteredAnswers: function() {
+          let items = [];
+          return this.answers.filter((i)=>{
+            if (items.indexOf(i.id) < 0) {
+              items.push(i.id);
+              return true;
+            } else {
+              return false;
+            }
+        });
+      }
     },
     methods: {
         add: function(holder) {
@@ -225,7 +236,9 @@ export default {
                 items.push(item.id);
             });
             self.answers.forEach(function(img) {
+              if (answerKeys.indexOf(img.id) < 0) {
                 answerKeys.push(img.id);
+              }
             });
             db.collection('scenarios').doc(self.scenarioId).update({
               holders: items,
