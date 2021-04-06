@@ -1,43 +1,47 @@
 <template>
     <section class="section">
         <div class="container">
-            <h1 class="title">Upload Images</h1>
-            <b-field class="imageFile">
+          <div class="columns">
+            <div class="column is-two-thirds is-offset-2 box">
+              <h1 class="title">Upload Images</h1>
+              <b-field class="imageFile">
                 <b-upload v-model="imageFile" type="file">
-                    <a class="button is-primary">
-                        <b-icon icon="upload"></b-icon>
-                        <span>Click to upload</span>
-                    </a>
+                  <a class="button is-primary">
+                    <b-icon icon="upload"></b-icon>
+                    <span>Click to upload</span>
+                  </a>
                 </b-upload>
                 <span class="file-name" v-if="imageFile">{{ imageFile.name }}</span>
-            </b-field>
-            <b-field label="Category">
+              </b-field>
+              <b-field label="Category">
                 <b-select placeholder="Select a category for a photo"
-                    v-if="categories.length > 0" v-model="category">
-                    <option
-                        v-for="cat in categories" :key="cat.id">
-                        {{ cat.data()['name'] }}
-                    </option>
+                          v-if="categories.length > 0" v-model="category">
+                  <option
+                      v-for="cat in categories" :key="cat.id">
+                    {{ cat.data()['name'] }}
+                  </option>
                 </b-select>
                 <b-select placeholder="Loading data" loading v-else></b-select>
-            </b-field>
-            <b-field label="Name">
+              </b-field>
+              <b-field label="Name">
                 <b-input v-model="name"></b-input>
-            </b-field>
-            <b-field label="Description">
+              </b-field>
+              <b-field label="Description">
                 <b-input type="textarea" v-model="desc"></b-input>
-            </b-field>
-            <b-field label="ประเภท">
-              <b-select placeholder="เลือกประเภท" v-model="group" expanded>
-                <option v-for="gr in itemGroups" :key="gr" :value="gr">
-                  {{ gr }}
-                </option>
-              </b-select>
-            </b-field>
-            <div class="buttons">
+              </b-field>
+              <b-field label="ประเภท">
+                <b-select placeholder="เลือกประเภท" v-model="group" expanded>
+                  <option v-for="gr in itemGroups" :key="gr" :value="gr">
+                    {{ gr }}
+                  </option>
+                </b-select>
+              </b-field>
+              <div class="buttons">
                 <button @click="resetForm" class="button is-danger">Reset</button>
                 <button @click="uploadFile" class="button is-primary">Submit</button>
+              </div>
             </div>
+          </div>
         </div>
     </section>
 </template>
@@ -57,11 +61,11 @@ export default {
     data () {
         return {
           imageFile: null,
-          name: '',
-          desc: '',
+          name: null,
+          desc: null,
           categories: [],
           category: null,
-          group: '',
+          group: null,
           itemGroups: []
         }
     },
@@ -92,11 +96,11 @@ export default {
             });
         },
         resetForm: function() {
-            this.imageFile = null;
-            this.name = '';
-            this.desc = '';
-            this.category = null;
-            this.isActive = false;
+            this.imageFile = null
+            this.name = null
+            this.desc = null
+            this.group = null
+            this.category = null
         },
         snackbar: function() {
             this.$buefy.snackbar.open({
