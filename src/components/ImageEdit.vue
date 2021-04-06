@@ -22,7 +22,7 @@
             <span>Save</span>
           </button>
           <button class="button is-light" @click="$router.back()">
-            <span>Cancel</span>
+            <span>Back</span>
           </button>
         </div>
       </div>
