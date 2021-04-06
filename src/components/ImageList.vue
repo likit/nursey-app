@@ -5,7 +5,7 @@
                 :active.sync="images.length===0"
                 :can-cancel="true">
             </b-loading>
-            <div class="card" v-for="image in images" :key="image.id">
+            <div class="card" v-for="image in sortedImages" :key="image.id">
                 <div class="card-content">
                     <div class="media">
                         <div class="media-left">
@@ -46,6 +46,14 @@ export default {
         return {
             images: [],
         }
+    },
+    computed: {
+      sortedImages: function () {
+        let self = this
+        return self.images.sort((a, b)=>{
+          return (a.group > b.group) ? 1 : (a.group === b.group) ? ((a.id > b.id) ? 1: -1) : -1
+        })
+      }
     },
     mounted: function() {
         var self = this;
