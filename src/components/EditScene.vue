@@ -1,18 +1,31 @@
 <template>
     <section class="section">
-        <div class="container has-text-centered">
-            <p class="title" v-if="scenario">{{ scenario.title }}</p>
-            <p class="subtitle" v-if="scenario">{{ scenario.description }}</p>
-            <span>Images {{ images.length }}</span>
-            <button @click="save" class="button is-info">
-                <span class="icon"><i class="far fa-save"></i></span>
-                <span>Save</span>
-            </button>
+        <div class="container">
+          <div class="columns">
+            <div class="column box is-two-thirds is-offset-2">
+              <b-field label="Title">
+                <b-input v-model="scenario.title"></b-input>
+              </b-field>
+              <b-field label="Description">
+                <b-input v-model="scenario.description"></b-input>
+              </b-field>
+              <div class="buttons is-centered">
+                <button @click="$router.back()" class="button is-light">Back</button>
+                <button @click="save" class="button is-success">
+                  <span class="icon"><i class="far fa-save"></i></span>
+                  <span>Save</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
+      <p>
+        <span class="tag">Total Items: {{ images.length }}</span>
+      </p>
         <b-tabs v-model="activeTab">
-            <b-tab-item label="Holders">
-                <div class="container">
-                    <div class="card" v-for="holder in filteredHolders" :key="holder.id">
+          <b-tab-item label="Holders">
+            <div class="container">
+              <div class="card" v-for="holder in filteredHolders" :key="'holder'+holder.id">
                         <div class="card-content">
                             <div class="media">
                                 <div class="media-left">
@@ -38,7 +51,7 @@
             </b-tab-item>
             <b-tab-item label="This">
                 <div class="container">
-                    <div class="card" v-for="holder in selectedItems" :key="holder.id">
+                    <div class="card" v-for="holder in answers" :key="'this'+holder.id">
                         <div class="card-content">
                             <div class="media">
                                 <div class="media-left">
@@ -60,7 +73,7 @@
                 </div>
             </b-tab-item>
             <b-tab-item label="Answers">
-                <div class="card" v-for="image in images" :key="image.id">
+                <div class="card" v-for="image in images" :key="'ans'+image.id">
                     <div class="card-content">
                         <div class="media">
                             <div class="media-left">
@@ -86,6 +99,36 @@
                     </div>
                 </div>
             </b-tab-item>
+          <b-tab-item label="Keys">
+            <template #header>
+              <span> Keys <b-tag rounded>{{ answers.length }}</b-tag> </span>
+            </template>
+            <div class="card" v-for="image in answers" :key="'key'+image.id">
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-left">
+                    <figure class="image is-64x64">
+                      <img :src="image.url">
+                    </figure>
+                  </div>
+                  <div class="media-content">
+                    <p class="title is-4">{{ image.name }}
+                      <span class="icon has-text-success" v-if="isCorrect(image)">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                    </p>
+                    <p><strong>Source:</strong> {{ image.fileUrl }}</p>
+                    <p><strong>Detail:</strong> {{ image.description }}</p>
+                    <div class="buttons">
+                      <button @click="mark(image)"
+                              class="button is-primary">Mark
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </b-tab-item>
         </b-tabs>
     </section>
 </template>
@@ -109,6 +152,7 @@ export default {
             scenario: null,
             answers: [],
             images: [],
+            imageIds: [],
             cache: {},
         }
     },
@@ -145,7 +189,10 @@ export default {
                                     name: rec.data()['name'],
                                     description: rec.data()['description']
                                 }
-                                self.images.push(imageItem);
+                                if (self.imageIds.indexOf(imageItem.id) < 0) {
+                                  self.images.push(imageItem);
+                                  self.imageIds.push(imageItem.id)
+                                }
                                 self.cache[holder.id].push(imageItem);
                             });
                         }
@@ -154,8 +201,8 @@ export default {
             }
         },
         remove: function(holder) {
-            var self = this;
-            var idx = self.selectedItems.indexOf(holder);
+            let self = this;
+            let idx = self.selectedItems.indexOf(holder);
             if (idx > -1) {
                 self.selectedItems.splice(idx, 1);
             }
@@ -171,25 +218,27 @@ export default {
             });
         },
         save: function() {
-            var self = this;
-            var items = [];
-            var anwserKeys = [];
+            let self = this;
+            let items = [];
+            let answerKeys = [];
             self.selectedItems.forEach(function(item) {
                 items.push(item.id);
             });
             self.answers.forEach(function(img) {
-                anwserKeys.push(img.id);
+                answerKeys.push(img.id);
             });
             db.collection('scenarios').doc(self.scenarioId).update({
-                holders: items,
-                answers: anwserKeys
+              holders: items,
+              answers: answerKeys,
+              title: self.scenario.title,
+              description: self.scenario.description,
             }).then(function() {
                 self.snackbar();
             });
         },
         mark: function(image) {
-            var self = this;
-            var idx = self.answers.indexOf(image);
+            let self = this;
+            let idx = self.answers.indexOf(image);
             if (idx < 0) {
                 self.answers.push(image);
             } else {
@@ -252,7 +301,11 @@ export default {
                                     self.images.push(imageItem);
                                     self.cache[item.id].push(imageItem);
                                     if (self.scenario.answers.indexOf(imageItem.id) > -1) {
+                                      if (self.answers.indexOf(imageItem.id) < 0) {
+                                        // eslint-disable-next-line no-console
+                                        console.log(imageItem.id)
                                         self.answers.push(imageItem);
+                                      }
                                     }
                                 });
                             }
