@@ -17,9 +17,10 @@
                             <p class="title is-4">{{ image.name }}</p>
                             <p><strong>Source:</strong> {{ image.fileUrl }}</p>
                             <p><strong>Detail:</strong> {{ image.description }}</p>
+                            <p><strong>Group:</strong> {{ image.group }}</p>
                             <div class="buttons">
                                 <button class="button is-danger">Delete</button>
-                                <button class="button is-primary">Edit</button>
+                                <button class="button is-primary" @click="editImage(image.id)">Edit</button>
                             </div>
                         </div>
                     </div>
@@ -53,16 +54,21 @@ export default {
                 pathRef = storage.ref(rec.data()['fileUrl']);
                 pathRef.getDownloadURL().then(function(url) {
                     self.images.push({
-                        url: url,
-                        fileUrl: rec.data()['fileUrl'],
-                        id: rec.id,
-                        name: rec.data()['name'],
-                        description: rec.data()['description']
+                      url: url,
+                      fileUrl: rec.data()['fileUrl'],
+                      id: rec.id,
+                      name: rec.data()['name'],
+                      group: rec.data()['group'],
+                      description: rec.data()['description']
                     });
                 });
             });
         });
     },
-    methods: {}
+    methods: {
+      editImage: function (imageId) {
+        this.$router.push({ name: 'ImageEdit', params: { imageId : imageId }})
+      }
+    }
 }
 </script>

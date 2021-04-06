@@ -14,6 +14,7 @@ import Login from './components/Login.vue'
 import Dashboard from './components/Dashboard.vue'
 import PlayStat from './components/PlayStat.vue'
 import Game from './components/Game.vue'
+import ImageEdit from "@/components/ImageEdit.vue"
 
 export const routes = [
     {
@@ -82,6 +83,15 @@ export const routes = [
         name: 'images',
         meta: {
             title: 'Image List',
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/images/:imageId',
+        component: ImageEdit,
+        name: 'ImageEdit',
+        meta: {
+            title: 'Image Edit',
             requiresAuth: true
         }
     },
