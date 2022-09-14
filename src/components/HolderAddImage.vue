@@ -93,10 +93,10 @@ export default {
     },
     computed: {
         filteredImages: function() {
-            var self = this;
+            let self = this;
             return self.images.filter(function(item) {
                 return self.selectedItems.indexOf(item) < 0;
-            });
+            }).sort((a, b)=> (a.name > b.name) ? 1 : -1);
         }
     },
     methods: {
@@ -150,7 +150,7 @@ export default {
             snapshot.forEach(function(rec) {
                 pathRef = storage.ref(rec.data()['fileUrl']);
                 pathRef.getDownloadURL().then(function(url) {
-                    var item = {
+                    let item = {
                         url: url,
                         fileUrl: rec.data()['fileUrl'],
                         id: rec.id,
