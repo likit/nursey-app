@@ -61,7 +61,7 @@ export default {
           let self = this
           imagesRecRef.doc(this.$route.params.imageRecId).update({
             name: self.name,
-            desc: self.desc,
+            description: self.desc,
             category: self.category
           }).then(function() {
             self.snackbar()
@@ -90,7 +90,7 @@ export default {
           let rec = snapshot.data()
           self.id = rec.id
           self.name = rec.name
-          self.desc = rec.desc
+          self.desc = rec.description
           self.category = rec.category
         });
     }

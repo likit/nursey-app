@@ -67,7 +67,7 @@ export default {
     },
     methods: {
         uploadFile: function() {
-            var self = this;
+            let self = this;
             storageRef.child(self.category+'/'+self.imageFile.name)
                 .put(self.imageFile).then(function() {
                     db.collection('images').add({
@@ -99,7 +99,7 @@ export default {
         }
     },
     mounted: function () {
-        var self = this;
+        let self = this;
         categoriesRef.get().then(function(snapshot) {
             snapshot.forEach(function(doc) {
                 self.categories.push(doc);
