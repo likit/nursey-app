@@ -16,7 +16,12 @@
                         <div class="media-content">
                             <p class="title is-4">{{ lesson.name }} <span v-if="lesson.isPracticeMode">(Practice Mode)</span></p>
                             <p><strong>Objective:</strong> {{ lesson.objective }}</p>
-                            <button class="button is-primary" @click="go(lesson.id)">Go</button>
+                            <div class="buttons">
+                              <button class="button is-light" @click="$router.push({name: 'edit-lesson', params: {lessonId: lesson.id}})">
+                                <span>Edit</span>
+                              </button>
+                              <button class="button is-primary" @click="$router.push({name: 'scenes', params: { lessonId: lesson.id}})">View</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -31,14 +36,14 @@ import {firebaseApp} from '../firebase-config.js'
 const db = firebaseApp.firestore();
 
 export default {
-    name: 'image-list',
+    name: 'lesson-list',
     data () {
         return {
             lessons: [],
         }
     },
     mounted: function() {
-        var self = this;
+        let self = this;
         db.collection('lessons').get().then(function(snapshot) {
             snapshot.forEach(function(rec) {
                     self.lessons.push({
@@ -50,10 +55,5 @@ export default {
                 });
             });
     },
-    methods: {
-        go: function(lessonId) {
-            this.$router.push({name: 'scenes', params: { lessonId: lessonId}});
-        }
-    }
 }
 </script>

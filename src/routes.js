@@ -4,6 +4,7 @@ import ImageList from './components/ImageList.vue'
 import ImageEdit from './components/ImageEdit.vue'
 import CreateLesson from './components/CreateLesson.vue'
 import LessonList from './components/LessonList.vue'
+import EditLesson from './components/EditLesson.vue'
 import CreateScene from './components/CreateScene.vue'
 import SceneList from './components/SceneList.vue'
 import CreateHolder from './components/CreateHolder.vue'
@@ -47,6 +48,15 @@ export const routes = [
         name: 'lessons',
         meta: {
             title: 'Lessons',
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/lessons/:lessonId/edit',
+        component: EditLesson,
+        name: 'edit-lesson',
+        meta: {
+            title: 'Edit Lesson',
             requiresAuth: true
         }
     },
