@@ -8,12 +8,6 @@
             <b-navbar-item tag="router-link" :to="{ name: 'home' }">
                 Home
             </b-navbar-item>
-            <b-navbar-item tag="router-link" :to="{ name: 'lessons' }">
-                Lessons
-            </b-navbar-item>
-            <b-navbar-item href="#">
-                About
-            </b-navbar-item>
             <b-navbar-dropdown label="Admin">
                 <b-navbar-item tag="router-link" :to="{ name: 'images' }">
                     List images
@@ -44,9 +38,6 @@
                 Welcome {{ user.data.displayName }}</b-navbar-item>
             <b-navbar-item tag="div">
                 <div class="buttons">
-                    <b-button tag="router-link" :to="{name: 'register'}" type="is-link">
-                        <strong>Sign up</strong>
-                    </b-button>
                     <b-button @click="signOut()" v-if="user.loggedIn" type="is-warning">Sign Out</b-button>
                     <b-button v-else tag="router-link" :to="{name: 'login'}" type="is-light">
                         <strong>Log In</strong>

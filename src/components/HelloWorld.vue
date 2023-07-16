@@ -5,12 +5,6 @@
     <p class="title is-size-3">Nursey App v.0.8</p>
     <h1 class="title is-5">ยินดีต้อนรับเข้าสู่ระบบแอพลิเคชั่นสำหรับการเรียนการสอนสาขาพยาบาลศาสตร์ รุ่นที่ 1.0</h1>
     <h1 class="subtitle is-5">พัฒนาโดยสถาบันการพยาบาลศรีสวรินทิรา สภากาชาดไทย</h1>
-    <router-link class="button is-large" :to="{'name': 'lessons'}">
-      <span class="icon">
-        <i class="far fa-play-circle has-text-link"></i>
-      </span>
-      <span class="has-text-link"><strong>Start</strong></span>
-    </router-link>
   </div>
 </section>
 </template>
