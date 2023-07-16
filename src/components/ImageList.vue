@@ -18,7 +18,8 @@
                             <p><strong>Source:</strong> {{ image.fileUrl }}</p>
                             <p><strong>Detail:</strong> {{ image.description }}</p>
                             <div class="buttons">
-                                <button class="button is-danger">Delete</button>
+                                <button @click="confirmDelete(image.id, image.fileUrl)"
+                                        class="button is-danger">Delete</button>
                                 <button class="button is-primary">Edit</button>
                             </div>
                         </div>
@@ -36,8 +37,19 @@ const storage = firebaseApp.storage('gs://nursey-cd88a.appspot.com/');
 const db = firebaseApp.firestore();
 
 // var storageRef = storage.ref();
-var imagesRecRef = db.collection('images');
-var pathRef;
+const imagesRecRef = db.collection('images');
+
+function sortByName(a, b) {
+  const nameA = a.name.toLowerCase()
+  const nameB = b.name.toLowerCase()
+  if (nameA < nameB) {
+    return -1
+  }
+  if (nameA > nameB) {
+    return 1
+  }
+  return 0;
+}
 
 export default {
     name: 'image-list',
@@ -47,10 +59,10 @@ export default {
         }
     },
     mounted: function() {
-        var self = this;
+        let self = this;
         imagesRecRef.get().then(function(snapshot) {
             snapshot.forEach(function(rec) {
-                pathRef = storage.ref(rec.data()['fileUrl']);
+                let pathRef = storage.ref(rec.data()['fileUrl']);
                 pathRef.getDownloadURL().then(function(url) {
                     self.images.push({
                         url: url,
@@ -61,8 +73,24 @@ export default {
                     });
                 });
             });
+            self.images.sort(sortByName)
         });
     },
-    methods: {}
+    methods: {
+      confirmDelete: function (recId, fileUrl) {
+        let self = this
+        this.$buefy.dialog.confirm({
+          message: 'คุณต้องการลบรายการนี้หรือไม่',
+          onConfirm: () => {
+            let pathRef = storage.ref(fileUrl)
+            pathRef.delete()
+            imagesRecRef.doc(recId).delete().then(()=>{
+              self.images = self.images.filter(image => image.id !== recId)
+            })
+            self.images.sort(sortByName)
+          }
+        })
+      }
+    }
 }
 </script>
