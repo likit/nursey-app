@@ -19,8 +19,13 @@
                             <p><strong>Detail:</strong> {{ image.description }}</p>
                             <div class="buttons">
                                 <button @click="confirmDelete(image.id, image.fileUrl)"
-                                        class="button is-danger">Delete</button>
-                                <button class="button is-primary">Edit</button>
+                                        class="button is-danger">
+                                  Delete
+                                </button>
+                                <button class="button is-primary"
+                                        @click="$router.push({name: 'image-edit', params: {imageRecId: image.id}})">
+                                  Edit
+                                </button>
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import HelloWorld from './components/HelloWorld.vue'
 import ImageUpload from './components/ImageUpload.vue'
 import ImageList from './components/ImageList.vue'
+import ImageEdit from './components/ImageEdit.vue'
 import CreateLesson from './components/CreateLesson.vue'
 import LessonList from './components/LessonList.vue'
 import CreateScene from './components/CreateScene.vue'
@@ -73,6 +74,15 @@ export const routes = [
         name: 'image-upload',
         meta: {
             title: 'Upload Image',
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/images/:imageRecId/edit',
+        component: ImageEdit,
+        name: 'image-edit',
+        meta: {
+            title: 'Edit Image',
             requiresAuth: true
         }
     },
