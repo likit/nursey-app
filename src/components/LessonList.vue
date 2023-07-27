@@ -16,9 +16,13 @@
                         <div class="media-content">
                             <p class="title is-4">{{ lesson.name }} <span v-if="lesson.isPracticeMode">(Practice Mode)</span></p>
                             <p><strong>Objective:</strong> {{ lesson.objective }}</p>
+                          <p><strong>ID:</strong> {{ lesson.id }}</p>
                             <div class="buttons">
                               <button class="button is-light" @click="$router.push({name: 'edit-lesson', params: {lessonId: lesson.id}})">
                                 <span>Edit</span>
+                              </button>
+                              <button class="button" @click="copyLesson(lesson.id)">
+                                <span class="icon"><i class="far fa-copy"></i></span>
                               </button>
                               <button class="button is-primary" @click="$router.push({name: 'scenes', params: { lessonId: lesson.id}})">View</button>
                               <button class="button is-danger" @click="deleteLesson(lesson.id)">
@@ -48,6 +52,29 @@ export default {
         }
     },
     methods: {
+      copyLesson: function (lessonId) {
+        let self = this
+        db.collection('lessons').doc(lessonId).get().then((snapshot)=>{
+          let d = snapshot.data()
+          d['name'] = 'Copy of ' + d['name']
+          db.collection('lessons').add(d).then(res=>{
+            db.collection('scenarios').where('lessonId', '==', lessonId).get().then((snapshot) => {
+              snapshot.forEach(rec => {
+                let scene_data = rec.data()
+                scene_data['lessonId'] = res.id
+                scene_data['title'] = 'Copy of ' + scene_data['title']
+                db.collection('scenarios').add(scene_data)
+              })
+            })
+            self.lessons.push({
+              name: d['name'],
+              id: res.id,
+              objective: d['objective'],
+              isPracticeMode: d['isPracticeMode']
+            })
+          })
+        })
+      },
       deleteLesson: function (lessonId) {
         let self = this
         this.$buefy.dialog.confirm({
