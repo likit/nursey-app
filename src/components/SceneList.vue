@@ -23,14 +23,8 @@
               <p class="title is-4"><span class="tag is-rounded is-info">{{scenario.number}}</span>{{ scenario.title }}</p>
               <p v-if="scenario.description"><strong>Detail:</strong> {{ scenario.description }}</p>
               <div class="buttons">
-                <button @click="playScenario(scenario.id)"
-                        class="button is-success">
-                  <b-icon icon="play"></b-icon>
-                  <span>Play</span>
-                </button>
                 <button @click="editScenario(scenario.id)" class="button">
                   <b-icon icon="pencil"></b-icon>
-                  <span>Edit</span>
                 </button>
                 <button class="button" @click="toggleSort(index)">
                   <span class="icon"><i class="fas fa-sort-numeric-up"></i></span>
@@ -40,6 +34,9 @@
                     <input type="number" v-model="scenario.number" class="input"/>
                   </div>
                 </div>
+                <button @click="deleteScenario(scenario.id)" class="button is-danger">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -102,8 +99,26 @@ export default {
     },
     toggleSort: function (index) {
       this.sortEditList[index] = !this.sortEditList[index]
-      alert(this.sortEditList[index])
-    }
+    },
+    deleteScenario: function (scenarioId) {
+      let self = this
+      this.$buefy.dialog.confirm({
+        title: 'Delete Scenario',
+        message: 'Are you sure want to delete this scenario? This cannot be undone.',
+        type: 'is-danger',
+        confirmText: 'Delete',
+        hasIcon: true,
+        onConfirm: ()=>{
+          db.collection('scenarios').doc(scenarioId).delete().then(() => {
+            self.scenarios = self.scenarios.filter(s => s.id != scenarioId)
+            this.$buefy.toast.open({
+              message: 'Scenario has been deleted.',
+              type: 'is-success'
+            })
+          })
+        }
+      })
+    },
   }
 }
 </script>
