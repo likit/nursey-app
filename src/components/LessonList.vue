@@ -21,6 +21,11 @@
                                 <span>Edit</span>
                               </button>
                               <button class="button is-primary" @click="$router.push({name: 'scenes', params: { lessonId: lesson.id}})">View</button>
+                              <button class="button is-danger" @click="deleteLesson(lesson.id)">
+                                <span class="icon">
+                                  <i class="fas fa-trash-alt"></i>
+                                </span>
+                              </button>
                             </div>
                         </div>
                     </div>
@@ -41,6 +46,32 @@ export default {
         return {
             lessons: [],
         }
+    },
+    methods: {
+      deleteLesson: function (lessonId) {
+        let self = this
+        this.$buefy.dialog.confirm({
+          title: 'Delete Scenario',
+          message: 'Are you sure want to delete this lessons along with its scenarios? This cannot be undone.',
+          type: 'is-danger',
+          confirmText: 'Delete',
+          hasIcon: true,
+          onConfirm: ()=>{
+            db.collection('scenarios').where('lessonId', '==', lessonId).get().then((snapshot) => {
+              snapshot.forEach(rec => {
+                db.collection('scenarios').doc(rec.id).delete()
+              })
+            })
+            db.collection('lessons').doc(lessonId).delete().then(()=>{
+              self.$buefy.toast.open({
+                message: 'Lesson and its scenarios have been deleted.',
+                type: 'is-success'
+              })
+            })
+            self.lessons = self.lessons.filter(l => l.id != lessonId)
+          }
+        })
+      }
     },
     mounted: function() {
         let self = this;
