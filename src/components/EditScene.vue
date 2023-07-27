@@ -1,13 +1,34 @@
 <template>
     <section class="section">
         <div class="container has-text-centered">
-            <p class="title" v-if="scenario">{{ scenario.title }}</p>
-            <p class="subtitle" v-if="scenario">{{ scenario.description }}</p>
+            <div v-if="!isEditing">
+              <p class="title" v-if="scenario">{{ scenario.title }}</p>
+              <p class="subtitle" v-if="scenario">{{ scenario.description }}</p>
+            </div>
+            <div v-else>
+              <div class="field">
+                <div class="control">
+                  <input v-model="scenario.title" class="input"/>
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <textarea v-model="scenario.description" class="textarea"></textarea>
+                </div>
+              </div>
+            </div>
             <span>Images {{ images.length }}</span>
-            <button @click="save" class="button is-info">
+            <div class="buttons">
+              <button @click="save" class="button is-success">
                 <span class="icon"><i class="far fa-save"></i></span>
                 <span>Save</span>
-            </button>
+              </button>
+              <button class="button" @click="isEditing=!isEditing">
+                <span class="icon"><i class="fas fa-pencil-alt"></i></span>
+                <span v-if="!isEditing">Edit</span>
+                <span v-else>Cancel</span>
+              </button>
+            </div>
         </div>
         <b-tabs v-model="activeTab">
             <b-tab-item label="Holders">
@@ -96,12 +117,13 @@ import {firebaseApp} from '../firebase-config.js'
 const storage = firebaseApp.storage('gs://nursey-cd88a.appspot.com/');
 const db = firebaseApp.firestore();
 
-var pathRef;
+let pathRef;
 
 export default {
     name: 'image-list',
     data () {
         return {
+            isEditing: false,
             holders: [],
             selectedItems: [],
             activeTab: 0,
@@ -114,7 +136,7 @@ export default {
     },
     computed: {
         filteredHolders: function() {
-            var self = this;
+            let self = this;
             return self.holders.filter(function(item) {
                 return self.selectedItems.indexOf(item) < 0;
             });
@@ -122,8 +144,8 @@ export default {
     },
     methods: {
         add: function(holder) {
-            var self = this;
-            var imageItem;
+            let self = this;
+            let imageItem;
             self.selectedItems.push(holder);
             if (holder.id in self.cache) {
                 self.cache[holder.id].forEach(function(img){
@@ -154,13 +176,13 @@ export default {
             }
         },
         remove: function(holder) {
-            var self = this;
-            var idx = self.selectedItems.indexOf(holder);
+            let self = this;
+            let idx = self.selectedItems.indexOf(holder);
             if (idx > -1) {
                 self.selectedItems.splice(idx, 1);
             }
             self.cache[holder.id].forEach(function(img) {
-                var idx = self.images.indexOf(img);
+                let idx = self.images.indexOf(img);
                 if (idx > -1) {
                     self.images.splice(idx, 1);
                 }
@@ -171,9 +193,9 @@ export default {
             });
         },
         save: function() {
-            var self = this;
-            var items = [];
-            var anwserKeys = [];
+            let self = this;
+            let items = [];
+            let anwserKeys = [];
             self.selectedItems.forEach(function(item) {
                 items.push(item.id);
             });
@@ -181,15 +203,18 @@ export default {
                 anwserKeys.push(img.id);
             });
             db.collection('scenarios').doc(self.scenarioId).update({
+                title: self.scenario.title,
+                description: self.scenario.description,
                 holders: items,
                 answers: anwserKeys
             }).then(function() {
+                self.isEditing = false
                 self.snackbar();
             });
         },
         mark: function(image) {
-            var self = this;
-            var idx = self.answers.indexOf(image);
+            let self = this;
+            let idx = self.answers.indexOf(image);
             if (idx < 0) {
                 self.answers.push(image);
             } else {
@@ -202,7 +227,7 @@ export default {
         snackbar: function() {
             this.$buefy.snackbar.open({
                 duration: 3000,
-                message: 'The holder has been created.',
+                message: 'The change has been recorded.',
                 type: 'is-success',
                 position: 'is-top',
                 queue: false,
@@ -210,7 +235,7 @@ export default {
         }
     },
     mounted: function() {
-        var self = this;
+        let self = this;
         self.scenarioId = self.$route.params.scenarioId;
         db.collection('scenarios').doc(self.scenarioId)
             .get().then(function(doc){
@@ -226,14 +251,14 @@ export default {
         });
         db.collection('holders').get().then(function(snapshot) {
             snapshot.forEach(function(rec) {
-                var item = {
+                let item = {
                     id: rec.id,
                     name: rec.data()['name'],
                     description: rec.data()['description'],
                     images: rec.data()['images']
                 }
                 self.holders.push(item);
-                var imageItem;
+                let imageItem;
                 if (self.scenario.holders.indexOf(item.id) > -1) {
                     self.selectedItems.push(item);
                     self.cache[item.id] = [];
