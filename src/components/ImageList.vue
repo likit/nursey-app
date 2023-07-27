@@ -5,7 +5,10 @@
                 :active.sync="images.length===0"
                 :can-cancel="true">
             </b-loading>
-            <div class="card" v-for="image in images" :key="image.id">
+            <b-field label="Search">
+              <b-input v-model="query"></b-input>
+            </b-field>
+            <div class="card" v-for="image in sortedImages" :key="image.id">
                 <div class="card-content">
                     <div class="media">
                         <div class="media-left">
@@ -61,7 +64,14 @@ export default {
     data () {
         return {
             images: [],
+            query: ''
         }
+    },
+    computed: {
+      sortedImages: function () {
+        let self = this
+        return self.images.sort(sortByName).filter(im => im.name.toLowerCase().includes(self.query.toLowerCase()))
+      }
     },
     mounted: function() {
         let self = this;
@@ -78,7 +88,6 @@ export default {
                     });
                 });
             });
-            self.images.sort(sortByName)
         });
     },
     methods: {
@@ -92,7 +101,6 @@ export default {
             imagesRecRef.doc(recId).delete().then(()=>{
               self.images = self.images.filter(image => image.id !== recId)
             })
-            self.images.sort(sortByName)
           }
         })
       }
